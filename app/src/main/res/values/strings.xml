@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">FinalProject</string>
+
+
+        <string-array name="gender_options">
+            <item>Select a Gender</item>
+            <item>Male</item>
+            <item>Female</item>
+        </string-array>
+
+
+
+    <string-array name="countries_array">
+        <item>Select a Country</item>
+        <item>Palestine</item>
+        <item>Jordan</item>
+        <item>Germany</item>
+        <item>Japan</item>
+        <item>Spain</item>
+    </string-array>
+
+
+    <string-array name="cities_array">
+        <item>Select a City</item>
+    </string-array>
+
+
+    <string-array name="cities_Palestine">
+        <item>Select a City</item>
+        <item>Hebron</item>
+        <item>Jenin</item>
+        <item>Jerusalem</item>
+        <item>Gaza</item>
+        <item>Nablus</item>
+    </string-array>
+
+    <string-array name="cities_Germany">
+        <item>Select a City</item>
+        <item>Berlin</item>
+        <item>Hamburg</item>
+        <item>Munich</item>
+        <item>Frankfurt</item>
+        <item>Cologne</item>
+    </string-array>
+
+    <string-array name="cities_Spain">
+        <item>Select a City</item>
+        <item>Madrid</item>
+        <item>Barcelona</item>
+        <item>Valencia</item>
+        <item>Seville</item>
+        <item>Zaragoza</item>
+    </string-array>
+
+    <string-array name="cities_Jordan">
+        <item>Select a City</item>
+        <item>Amman</item>
+        <item>Irbid</item>
+        <item>Zarqa</item>
+        <item>Aqaba</item>
+        <item>Madaba</item>
+    </string-array>
+
+    <string-array name="cities_Japan">
+        <item>Select a City</item>
+        <item>Tokyo</item>
+        <item>Osaka</item>
+        <item>Kyoto</item>
+        <item>Sapporo</item>
+        <item>Fukuoka</item>
+    </string-array>
+
+
+
+</resources>
