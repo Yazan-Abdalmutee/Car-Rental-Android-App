@@ -1,8 +1,26 @@
 <resources>
     <string name="app_name">FinalProject</string>
+    <string name="todo">TODO</string>
+    <string name="slogan">The wheels that move you</string>
+    <string name="continue_str">Continue</string>
+    <string name="signIn_text">Hello There,\nWelcome Back</string>
+    <string name="signIn">Sign In</string>
+    <string name="email_hint">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="connectSlogan">Car Rental</string>
+    <string name="sign_in_message">Sign in to continue</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="signup_loginScreen_message">Don\'t have an account? Sign up</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="already_have_an_account_sign_in_here">Already have an account? Sign in here.</string>
+    <string name="create_an_account_to_get_started">Create an account to get started</string>
+    <string name="phone_number">Phone Number</string>
 
 
-        <string-array name="gender_options">
+    <string-array name="gender_options">
             <item>Select a Gender</item>
             <item>Male</item>
             <item>Female</item>

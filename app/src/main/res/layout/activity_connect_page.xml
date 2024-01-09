@@ -1,36 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ConnectPage">
+    android:background="#225aeb"
+    android:backgroundTintMode="src_in"
+    android:padding="20dp"
+    tools:context=".ConnectActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="505dp"
+        android:layout_height="303dp"
+        android:layout_marginTop="96dp"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/car_white"
+        android:transitionName="logo_transition"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/connectButton"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:title="Advanced Car Dealer"
-        app:titleTextColor="#FDE475" />
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/bungee"
+        android:backgroundTint="@color/white"
+        android:text="@string/continue_str"
+        android:textColor="#225aeb"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/car"
-        android:gravity="bottom|center"
-        android:orientation="vertical">
+    <TextView
+        android:id="@+id/connectSlogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="236dp"
+        android:fontFamily="@font/bungee"
+        android:text="@string/connectSlogan"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:transitionName="slogan_transition"
+        app:layout_constraintEnd_toStartOf="@+id/divider"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintTop_toTopOf="@+id/logo" />
 
-        <Button
-            android:id="@+id/button_connect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:backgroundTint="#172FBD"
-            android:text="CONNECT"
-            android:textColor="#FDD835" />
-    </LinearLayout>
-</LinearLayout>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="200dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="300dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/logo" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

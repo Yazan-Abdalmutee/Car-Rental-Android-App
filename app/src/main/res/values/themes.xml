@@ -3,7 +3,18 @@
     <style name="Base.Theme.FinalProject" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/paypal_blue</item>
+        <item name="colorOnError">@android:color/holo_red_light</item>
+        <item name="colorAccent">@color/paypal_yellow</item>
+
     </style>
 
-    <style name="Theme.FinalProject" parent="Base.Theme.FinalProject" />
+    <style name="Theme.FinalProject" parent="Base.Theme.FinalProject">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/paypal_blue</item>
+        <item name="colorPrimaryDark">@color/paypal_blue</item>
+        <item name="colorAccent">@color/paypal_yellow</item>
+    </style>
+
 </resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/aldrich</item>
+        <item>@font/antic</item>
+        <item>@font/anton</item>
+        <item>@font/bangers</item>
+        <item>@font/bebas_neue</item>
+        <item>@font/bungee</item>
+        <item>@font/cinzel_decorative_bold</item>
+        <item>@font/rubik_mono_one</item>
+    </array>
+</resources>
