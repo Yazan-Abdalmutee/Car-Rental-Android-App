@@ -18,14 +18,15 @@
     <string name="already_have_an_account_sign_in_here">Already have an account? Sign in here.</string>
     <string name="create_an_account_to_get_started">Create an account to get started</string>
     <string name="phone_number">Phone Number</string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
 
 
     <string-array name="gender_options">
-            <item>Select a Gender</item>
-            <item>Male</item>
-            <item>Female</item>
-        </string-array>
-
+        <item>Select a Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
 
 
     <string-array name="countries_array">
@@ -87,7 +88,6 @@
         <item>Sapporo</item>
         <item>Fukuoka</item>
     </string-array>
-
 
 
 </resources>

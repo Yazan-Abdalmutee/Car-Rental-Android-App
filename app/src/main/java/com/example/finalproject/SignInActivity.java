@@ -42,8 +42,8 @@ public class SignInActivity extends AppCompatActivity {
                 Toast.makeText(SignInActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
-            Toast toast = Toast.makeText(SignInActivity.this, "Welcome back!", Toast.LENGTH_SHORT);
-            toast.show();
+
+
         });
         Button signUp = findViewById(R.id.signUp_button);
         signUp.setOnClickListener(v -> {
