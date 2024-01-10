@@ -13,13 +13,7 @@
         android:theme="@style/Theme.FinalProject"
         tools:targetApi="31">
         <activity
-            android:name=".CustomerActivit"
-            android:exported="false" />
-        <activity
             android:name=".SignInAsCustomerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomeLayoutActivity"
             android:exported="false" />
         <activity
             android:name=".ConnectActivity"

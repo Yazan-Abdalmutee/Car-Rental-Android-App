@@ -25,6 +25,7 @@ public class SignInAsCustomerActivity extends AppCompatActivity implements Navig
         toolbar = findViewById(R.id.toolbar_home);
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.navigaton);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
