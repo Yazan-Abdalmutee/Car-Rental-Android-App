@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.google.android.material.divider.MaterialDivider;
 
+import java.util.ArrayList;
+
 
 // create a car record class
 

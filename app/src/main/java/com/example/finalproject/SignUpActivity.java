@@ -56,7 +56,8 @@ public class SignUpActivity extends AppCompatActivity {
         password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //
+                // Do nothing
+
             }
 
             @Override

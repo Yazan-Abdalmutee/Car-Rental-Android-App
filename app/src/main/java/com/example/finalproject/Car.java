@@ -1,25 +1,14 @@
 package com.example.finalproject;
 
-import androidx.annotation.NonNull;
-
 public class Car {
-    private String type;
+
     private int ID;
+    private String type;
+    private String factoryName;
 
-    public Car(String type, int ID) {
-        this.type = type;
+    public Car(int ID, String factoryName, String type) {
         this.ID = ID;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setType(String type) {
+        this.factoryName = factoryName;
         this.type = type;
     }
 
@@ -27,12 +16,32 @@ public class Car {
         this.ID = ID;
     }
 
-    @NonNull
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setFactoryName(String factoryName) {
+        this.factoryName = factoryName;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getFactoryName() {
+        return factoryName;
+    }
+
     @Override
     public String toString() {
         return "Car{" +
-                "type='" + type + '\'' +
-                ", ID=" + ID +
+                "ID=" + ID +
+                ", type='" + type + '\'' +
+                ", factoryName='" + factoryName + '\'' +
                 '}';
     }
 }

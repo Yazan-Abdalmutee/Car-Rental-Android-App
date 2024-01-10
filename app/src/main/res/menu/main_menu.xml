@@ -5,6 +5,7 @@
         android:layout_height="match_parent"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/homeItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/home"
@@ -15,6 +16,7 @@
         android:layout_height="match_parent"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/carMenuItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/book_13810847"
