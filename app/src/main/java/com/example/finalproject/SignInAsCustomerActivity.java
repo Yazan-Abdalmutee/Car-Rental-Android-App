@@ -70,6 +70,7 @@ public class SignInAsCustomerActivity extends AppCompatActivity implements Navig
                 fragmentTransaction.commit();
             }
         } else if (id == R.id.carMenuItem) {
+
             if (!(currentFragment instanceof CarMenuFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.layout_root, new CarMenuFragment(), "CarMenuFrag");

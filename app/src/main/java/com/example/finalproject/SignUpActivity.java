@@ -29,12 +29,26 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_page);
-        Button signUp = findViewById(R.id.signUp_screen_login_button);
-        signUp.setOnClickListener(v -> {
+        Button signIn = findViewById(R.id.signUp_screen_login_button);
+        signIn.setOnClickListener(v -> {
             Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
             SignUpActivity.this.startActivity(intent);
             finish();
         });
+
+
+        //  Home page for customer
+        Button signUp = findViewById(R.id.signUp_button);
+        signUp.setOnClickListener(v -> {
+            // Home Page
+            Intent intent = new Intent(SignUpActivity.this, SignInAsCustomerActivity.class);
+            SignUpActivity.this.startActivity(intent);
+            finish();
+        });
+
+
+
+
 
         TextInputLayout passwordLayout = findViewById(R.id.password_text_input);
         EditText password = passwordLayout.getEditText();
