@@ -13,21 +13,24 @@
         android:theme="@style/Theme.FinalProject"
         tools:targetApi="31">
         <activity
-            android:name=".ConnectActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:name=".SignInAsCustomerActivity"
             android:exported="false" />
+        <activity
+            android:name=".ConnectActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".SignUpActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".SignInActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
