@@ -1,25 +1,23 @@
 package com.example.finalproject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
-
-import org.w3c.dom.Text;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -163,9 +161,29 @@ public class SignUpActivity extends AppCompatActivity {
                 //
             }
         });
+        final AutoCompleteTextView countryAuto = findViewById(R.id.customerTextView);
 
+        // create list of customer
+        ArrayAdapter<String> countriesAdapter = new ArrayAdapter<>(SignUpActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.countries_array));
+        countryAuto.setAdapter(countriesAdapter);
+        countryAuto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(arg1.getWindowToken(), 0);
 
+            }
+        });
+        // select the first item from the list
+        countryAuto.setText(countriesAdapter.getItem(0), false);
+        countryAuto.setKeyListener(null);
+        countryAuto.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
+        });
 //        Spinner genderSpinner = findViewById(R.id.spinnerGender);
 //        countrySpinner = findViewById(R.id.spinnerCountry);
 //        citySpinner = findViewById(R.id.spinnerCity);

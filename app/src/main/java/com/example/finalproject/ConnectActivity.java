@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -14,10 +15,16 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.divider.MaterialDivider;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 // create a car record class
@@ -53,13 +60,46 @@ public class ConnectActivity extends AppCompatActivity {
 
         connect.setOnClickListener(v -> {
             /// add transition to the next page
-
-            Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
-            ConnectActivity.this.startActivity(intent);
-            finish();
+            new NetworkTask().execute();
         });
 
 
+    }
 
+    private class NetworkTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+                String link = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?select=make%2Cmodel%2Cdrive%2Cfueltype%2Cyear%2Cvclass%2Ccreatedon%2Cmodifiedon&limit=10";
+                URL url = new URL(link); // Replace with your API endpoint
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.connect();
+
+                InputStream inputStream = connection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder response = new StringBuilder();
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+
+                return response.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String apiResult) {
+            // check if the API call was successful using the code
+            if (apiResult != null) {
+                Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
+                startActivity(intent);
+            }
+        }
     }
 }
