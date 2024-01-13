@@ -168,27 +168,31 @@
             android:orientation="horizontal"
             android:baselineAligned="false">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/country_spinner"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:paddingBottom="7dp"
-            android:layout_weight="2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:boxStrokeWidth="4dp"
-            android:layout_marginBottom="20dp"
-            android:hint="@string/phone_number"
-            app:boxStrokeColor="@color/black"
-            android:textColorHint="@color/gray">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/customerSpinnerLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:inputType="none"
+                android:layout_width="0dp"
+                android:hint="@string/country"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:completionThreshold="1"
+                android:focusableInTouchMode="false"
+                android:cursorVisible="false"
+                android:paddingRight="7dp"
+                app:boxStrokeColor="@color/black"
+                >
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/customerTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:dropDownWidth="match_parent"
+                    android:entries="@array/countries_array"
+                    android:inputType="none"
+                    tools:ignore="KeyboardInaccessibleWidget" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/option"
-                style="@style/Widget.AppCompat.Spinner.DropDown"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:dropDownWidth="match_parent" />
-        </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/phone_text_input"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -212,7 +216,8 @@
                     android:textSize="18sp"
                     tools:ignore="TextContrastCheck" />
             </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+
+    </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

@@ -2,7 +2,7 @@
     <string name="app_name">FinalProject</string>
     <string name="todo">TODO</string>
     <string name="slogan">The wheels that move you</string>
-    <string name="continue_str">Continue</string>
+    <string name="continue_str">CONNECT</string>
     <string name="signIn_text">Hello There,\nWelcome Back</string>
     <string name="signIn">Sign In</string>
     <string name="email_hint">Email</string>
@@ -18,6 +18,7 @@
     <string name="already_have_an_account_sign_in_here">Already have an account? Sign in here.</string>
     <string name="create_an_account_to_get_started">Create an account to get started</string>
     <string name="phone_number">Phone Number</string>
+    <string name="country">Country</string>
 
 
     <string-array name="gender_options">
@@ -29,12 +30,11 @@
 
 
     <string-array name="countries_array">
-        <item>Select a Country</item>
-        <item>Palestine</item>
-        <item>Jordan</item>
-        <item>Germany</item>
-        <item>Japan</item>
-        <item>Spain</item>
+        <item>PS</item>
+        <item>JO</item>
+        <item>DE</item>
+        <item>JP</item>
+        <item>SP</item>
     </string-array>
 
 
