@@ -1,8 +1,6 @@
 package com.example.finalproject;
 
 import android.app.Application;
-import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
 

@@ -100,6 +100,8 @@
     <string name="logout">Logout</string>
     <string name="main_menu_group_1">Navigation</string>
     <string name="main_menu_group_2">Utility</string>
+    <string name="profile">Profile</string>
+    <string name="search">Search</string>
 
 
 </resources>

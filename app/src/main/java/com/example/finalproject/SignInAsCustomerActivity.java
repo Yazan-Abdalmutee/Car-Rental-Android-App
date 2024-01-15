@@ -25,7 +25,6 @@ public class SignInAsCustomerActivity extends AppCompatActivity implements Navig
     Toolbar toolbar;
     LinearLayout root_layout;
     FragmentManager fragmentManager;
-    HomeFragment homeFragment;
 
 
     @Override
