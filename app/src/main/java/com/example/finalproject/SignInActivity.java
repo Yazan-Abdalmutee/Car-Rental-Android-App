@@ -44,7 +44,7 @@ public class SignInActivity extends AppCompatActivity {
                 DatabaseManager databaseManager = MyApplication.getDatabaseManager();
                 String HashedPassword = PasswordHasher.hashPassword(password.getText().toString());
                 if (databaseManager.isLoginCredentialsValid(email.getText().toString(), HashedPassword)) {
-                    Intent intent = new Intent(SignInActivity.this, SignInAsCustomerActivity.class);
+                    Intent intent = new Intent(SignInActivity.this, CustomerNavigator.class);
                     startActivity(intent);
                     finish();
                 } else {

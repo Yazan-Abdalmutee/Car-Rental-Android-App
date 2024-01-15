@@ -4,12 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Patterns;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -42,7 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
         Button signUp = findViewById(R.id.signUp_button);
         signUp.setOnClickListener(v -> {
             // Home Page
-            Intent intent = new Intent(SignUpActivity.this, SignInAsCustomerActivity.class);
+            Intent intent = new Intent(SignUpActivity.this, CustomerNavigator.class);
             SignUpActivity.this.startActivity(intent);
             finish();
         });
@@ -256,7 +253,7 @@ public class SignUpActivity extends AppCompatActivity {
                     // insert the customer into the database
                     db.insertCustomer(email.getText().toString().trim(), firstName.getText().toString().trim(), lastName.getText().toString().trim(), hashedPassword, phone.getText().toString().trim(), countryAuto.getText().toString(), cityAuto.getText().toString());
                     Toast.makeText(SignUpActivity.this, "You have successfully registered", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SignUpActivity.this, SignInAsCustomerActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, CustomerNavigator.class);
                     startActivity(intent);
                     finish();
                 }

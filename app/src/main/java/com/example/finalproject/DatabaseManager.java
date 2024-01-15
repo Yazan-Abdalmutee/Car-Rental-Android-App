@@ -26,7 +26,7 @@ public class DatabaseManager {
     }
 
     // Insert a new customer into the CUSTOMER_TABLE
-    public long insertCustomer(String email, String firstName, String lastName, String passwordHashed,
+    public void insertCustomer(String email, String firstName, String lastName, String passwordHashed,
                                String phoneNumber, String country, String city) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.CUSTOMER_EMAIL, email);
@@ -37,7 +37,7 @@ public class DatabaseManager {
         values.put(DatabaseHelper.CUSTOMER_COUNTRY, country);
         values.put(DatabaseHelper.CUSTOMER_CITY, city);
 
-        return database.insert(DatabaseHelper.CUSTOMER_TABLE, null, values);
+        database.insert(DatabaseHelper.CUSTOMER_TABLE, null, values);
     }
 
     // Insert a new car into the CAR_TABLE
@@ -92,28 +92,22 @@ public class DatabaseManager {
     }
 
     public boolean isEmailUsed(String email) {
-        Cursor cursor = null;
 
-        try {
-            cursor = database.query(
-                    DatabaseHelper.CUSTOMER_TABLE,
-                    null,
-                    DatabaseHelper.CUSTOMER_EMAIL + " = ?",
-                    new String[]{email},
-                    null,
-                    null,
-                    null
-            );
+        try (Cursor cursor = database.query(
+                DatabaseHelper.CUSTOMER_TABLE,
+                null,
+                DatabaseHelper.CUSTOMER_EMAIL + " = ?",
+                new String[]{email},
+                null,
+                null,
+                null
+        )) {
 
             // Check if the cursor has rows
             return cursor != null && cursor.moveToFirst();
 
-        } finally {
-            // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
-            if (cursor != null) {
-                cursor.close();
-            }
         }
+        // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
     }
 
     public boolean isLoginCredentialsValid(String email, String password) {

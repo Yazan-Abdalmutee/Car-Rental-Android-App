@@ -21,7 +21,7 @@
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.FinalProject.NoActionBar" />
         <activity
-            android:name=".SignInAsCustomerActivity"
+            android:name=".CustomerNavigator"
             android:exported="false" />
         <activity
             android:name=".ConnectActivity"

@@ -18,7 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class SignInAsCustomerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CustomerNavigator extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;

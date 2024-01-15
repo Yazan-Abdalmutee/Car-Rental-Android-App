@@ -9,7 +9,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Table Name
 
     // Database Information
-    static final String DB_NAME = "DEALERSHIP.DB";
+    static final String DB_NAME = "CAPITAL.DB";
 
     // database version
     static final int DB_VERSION = 1;
@@ -35,6 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CUSTOMER_PHONE_NUMBER = "phoneNumber";
     public static final String CUSTOMER_COUNTRY = "country";
     public static final String CUSTOMER_CITY = "city";
+    public static final String IS_ADMIN = "isAdmin";
 
     // Reservation Table columns
     public static final String RESERVATION_ID = "reservationID";
@@ -55,7 +56,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             CUSTOMER_PASSWORD_HASHED + " TEXT NOT NULL, " +
             CUSTOMER_PHONE_NUMBER + " TEXT NOT NULL, " +
             CUSTOMER_COUNTRY + " TEXT NOT NULL, " +
-            CUSTOMER_CITY + " TEXT NOT NULL);";
+            CUSTOMER_CITY + " TEXT NOT NULL, " +
+            IS_ADMIN + " INTEGER NOT NULL);";
     public static final String CREATE_CAR_TABLE = "CREATE TABLE if not exists " + CAR_TABLE + "(" +
             CAR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             CAR_NAME + " TEXT NOT NULL, " +

@@ -1,23 +1,15 @@
 package com.example.finalproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.app.ActivityOptions;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
-import android.view.Window;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.material.divider.MaterialDivider;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -66,6 +58,7 @@ public class ConnectActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class NetworkTask extends AsyncTask<Void, Void, String> {
 
         @Override
@@ -97,7 +90,7 @@ public class ConnectActivity extends AppCompatActivity {
         protected void onPostExecute(String apiResult) {
             // check if the API call was successful using the code
             if (apiResult != null) {
-                Intent intent = new Intent(ConnectActivity.this, SignInAsCustomerActivity.class);
+                Intent intent = new Intent(ConnectActivity.this, CustomerNavigator.class);
                 startActivity(intent);
             }
         }
