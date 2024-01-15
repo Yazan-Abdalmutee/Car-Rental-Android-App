@@ -1,69 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:checkableBehavior="single">
         <item
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/home"
-            android:title="Home" />
-    </group>
-    <group
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:checkableBehavior="single">
+                android:title="Navigation">
+            <menu>
+                    <item
+                        android:id="@+id/homeItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:icon="@drawable/baseline_home_24"
+                        android:checkable="true"
+                        android:title="@string/home" />
+
+                    <item
+                        android:id="@+id/carMenuItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:icon="@drawable/baseline_directions_car_24"
+                        android:checkable="true"
+                        android:title="@string/cars" />
+
+                    <item
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:icon="@drawable/baseline_favorite_24"
+                        android:checkable="true"
+                        android:title="@string/favorites" />
+                    <item
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:icon="@drawable/baseline_bookmark_24"
+                        android:checkable="true"
+                        android:title="@string/reservations" />
+                    <item
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:icon="@drawable/baseline_local_offer_24"
+                        android:checkable="true"
+                        android:title="@string/special_offers" />
+            </menu>
+        </item>
+
+
         <item
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/book_13810847"
-            android:title="Car Menu" />
-        <item
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/agenda_9924166"
-            android:title="Reservations" />
-        <item
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/favorite"
-            android:title="Favorites" />
-        <item
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/offer"
-            android:title="Special Offers" />
-    </group>
-    <group
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:checkableBehavior="single">
-        <item
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/profile"
-            android:title="Profile" />
-    </group>
-    <group
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:checkableBehavior="single">
-        <item
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/call"
-            android:title="Call Us or Find Us" />
-    </group>
-    <group
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/logout_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/leave"
-            android:title="Logout" />
-    </group>
+            android:title="Utility">
+                <menu>
+                        <item
+                            android:id="@+id/profile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:icon="@drawable/baseline_group_add_24"
+                            android:title="Profile" />
+                        <item
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:icon="@drawable/baseline_local_phone_24"
+                            android:title="@string/call_us_or_find_us" />
+
+
+                        <item
+                            android:id="@+id/logout_group"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:icon="@drawable/baseline_logout_24"
+                            android:title="@string/logout" />
+                </menu>
+        </item>
+
+
+
 </menu>

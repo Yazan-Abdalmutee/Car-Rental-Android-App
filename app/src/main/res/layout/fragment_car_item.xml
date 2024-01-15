@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="#FFFF"
+    android:elevation="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp"
+    tools:context=".CarItemFragment">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#FFFF"
+        android:visibility="visible"
+        tools:context=".CarItemFragment">
+
+        <ImageView
+            android:id="@+id/carImage"
+            android:layout_width="130dp"
+            android:layout_height="137dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#FFFF"
+            android:scaleType="fitXY"
+            android:src="@drawable/car_item" />
+
+        <LinearLayout
+            android:id="@+id/L1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/carImage"
+            android:layout_alignBottom="@+id/carImage"
+            android:layout_toEndOf="@+id/carImage"
+            android:background="#FFFF"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/carFactory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Car Factory"
+                android:textColor="#000"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/carType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Car Type"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="59dp"
+            android:layout_height="49dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="2dp"
+            android:backgroundTintMode="src_over"
+            android:src="@drawable/heart"
+            android:tintMode="src_atop" />
+
+        <LinearLayout
+            android:id="@+id/addtional_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/carImage"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/yazan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="12dp"
+                android:text="Carlsen 3mk "
+                android:textSize="20sp"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/button_reserve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reserve" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
+

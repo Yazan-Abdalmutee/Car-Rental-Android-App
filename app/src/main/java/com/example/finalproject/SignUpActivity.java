@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,12 +30,26 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_page);
-        Button signUp = findViewById(R.id.signUp_screen_login_button);
-        signUp.setOnClickListener(v -> {
+        Button signIn = findViewById(R.id.signUp_screen_login_button);
+        signIn.setOnClickListener(v -> {
             Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
             SignUpActivity.this.startActivity(intent);
             finish();
         });
+
+
+        //  Home page for customer
+        Button signUp = findViewById(R.id.signUp_button);
+        signUp.setOnClickListener(v -> {
+            // Home Page
+            Intent intent = new Intent(SignUpActivity.this, SignInAsCustomerActivity.class);
+            SignUpActivity.this.startActivity(intent);
+            finish();
+        });
+
+
+
+
 
         TextInputLayout passwordLayout = findViewById(R.id.password_text_input);
         EditText password = passwordLayout.getEditText();
@@ -48,13 +63,15 @@ public class SignUpActivity extends AppCompatActivity {
         TextInputLayout confirmPasswordLayout = findViewById(R.id.cPassword_text_input);
         confirmPasswordLayout.setErrorIconDrawable(null);
         EditText confirmPassword = confirmPasswordLayout.getEditText();
-
+        TextInputLayout phoneLayout = findViewById(R.id.phone_text_input);
+        EditText phone = phoneLayout.getEditText();
         //check if the password is correctly formatted
         assert password != null;
         password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //
+                // Do nothing
+
             }
 
             @Override
@@ -161,182 +178,89 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
         final AutoCompleteTextView countryAuto = findViewById(R.id.customerTextView);
-
-        // create list of customer
+        final AutoCompleteTextView cityAuto = findViewById(R.id.citySpinnerAutoCompleteTextView);
+        final AutoCompleteTextView genderAuto = findViewById(R.id.genderAutoCompleteTV);
+        ArrayAdapter<String> genderOptions = new ArrayAdapter<>(SignUpActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.gender_options));
         ArrayAdapter<String> countriesAdapter = new ArrayAdapter<>(SignUpActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.countries_array));
         countryAuto.setAdapter(countriesAdapter);
-        countryAuto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        genderAuto.setAdapter(genderOptions);
+        cityAuto.setAdapter(new ArrayAdapter<>(SignUpActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.cities_Palestine)));
 
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                in.hideSoftInputFromWindow(arg1.getWindowToken(), 0);
-
+        genderAuto.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         });
-        // select the first item from the list
-        countryAuto.setText(countriesAdapter.getItem(0), false);
-        countryAuto.setKeyListener(null);
+
         countryAuto.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         });
-//        Spinner genderSpinner = findViewById(R.id.spinnerGender);
-//        countrySpinner = findViewById(R.id.spinnerCountry);
-//        citySpinner = findViewById(R.id.spinnerCity);
-//        zipCode = findViewById(R.id.textView_ZipCode);
-//        TextView login = findViewById(R.id.textView_login);
-//        Button SignUp = findViewById(R.id.button_SignUp);
-//
-//        ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this, R.array.gender_options, android.R.layout.simple_spinner_item);
-//        adapterGender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        genderSpinner.setAdapter(adapterGender);
-//
-//
-//        ArrayAdapter<CharSequence> adapterCountry = ArrayAdapter.createFromResource(this, R.array.countries_array, android.R.layout.simple_spinner_item);
-//        adapterCountry.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        countrySpinner.setAdapter(adapterCountry);
-//
-//
-//        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-//                if (position > 0) {
-//                    String selectedCountry = parentView.getItemAtPosition(position).toString();
-//                    updateZipCode(selectedCountry);
-//                    updateCitySpinner(selectedCountry);
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parentView) {
-//            }
-//        });
-//
-//        login.setOnClickListener(view -> {
-//            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-//            SignUpActivity.this.startActivity(intent);
-//            finish();
-//        });
-//        SignUp.setOnClickListener(view -> {
-//            int selectedGenderPosition = genderSpinner.getSelectedItemPosition();
-//            int selectedCountryPosition = countrySpinner.getSelectedItemPosition();
-//            int selectedCityPostion = citySpinner.getSelectedItemPosition();
-//            String firstPassword = password.getText().toString();
-//            String secondPassword = confirmPassword.getText().toString();
-//            if (firstName.getText().toString().length() <= 2) {
-//                showToast("first name should be more then 2 letters");
-//            } else if (lastName.getText().toString().length() <= 2) {
-//                showToast("last name should be more then 2 letters");
-//            } else if (selectedGenderPosition == 0) {
-//                showToast("Please select a gender");
-//            } else if (!isValidEmail(email.getText().toString())) {
-//                showToast("Please enter a valid email");
-//            } else if (!isValidPassword(firstPassword)) {
-//            } else if (!firstPassword.equals(secondPassword)) {
-//                showToast("Passwords did not match");
-//            } else if (selectedCountryPosition == 0) {
-//                showToast("Please select a Country");
-//            } else if (selectedCityPostion == 0) {
-//                showToast("Please select a City");
-//            } else if (phoneNumber.getText().toString().length() <= 2) {
-//                showToast("Please enter the phone number");
-//            }
-//        });
-//    }
-//
-//    private boolean isValidPassword(String password) {
-//        if (password.length() < 5) {
-//            showToast("password length should be >= 5");
-//            return false;
-//        }
-//        boolean hasLetter = false;
-//        boolean hasNumber = false;
-//        boolean hasSpecialCharacter = false;
-//        for (char ch : password.toCharArray()) {
-//            if (Character.isLetter(ch)) {
-//                hasLetter = true;
-//            } else if (Character.isDigit(ch)) {
-//                hasNumber = true;
-//            } else if (isSpecialCharacter(ch)) {
-//                hasSpecialCharacter = true;
-//            }
-//        }
-//        if (!hasLetter) {
-//            showToast("password  should have at least 1 letter");
-//        } else if (!hasNumber) {
-//            showToast("password  should have at least 1 number");
-//        } else if (!hasSpecialCharacter) {
-//            showToast("password  should have at least 1 SpecialCharacter [@$!%*?&]");
-//        }
-//        return hasLetter && hasNumber && hasSpecialCharacter;
-//    }
-//
-//    private boolean isSpecialCharacter(char ch) {
-//        String specialCharacters = "@$!%*?&";
-//        return specialCharacters.indexOf(ch) != -1;
-//    }
-//
-//    private void showToast(String message) {
-//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-//    }
-//
-//    private void updateCitySpinner(String selectedCountry) {
-//        int cityArrayResourceId = getResourceIdForCountry(selectedCountry);
-//        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(this, cityArrayResourceId, android.R.layout.simple_spinner_item);
-//        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        citySpinner.setAdapter(cityAdapter);
-//    }
-//
-//    private int getResourceIdForCountry(String selectedCountry) {
-//        switch (selectedCountry) {
-//            case "Palestine":
-//                return R.array.cities_Palestine;
-//            case "Jordan":
-//                return R.array.cities_Jordan;
-//            case "Germany":
-//                return R.array.cities_Germany;
-//            case "Spain":
-//                return R.array.cities_Spain;
-//            case "Japan":
-//                return R.array.cities_Japan;
-//            default:
-//                return R.array.cities_array;
-//        }
-//    }
-//
-//    private void updateZipCode(String selectedCountry) {
-//        switch (selectedCountry) {
-//            case "Palestine":
-//                zipCode.setText("+970");
-//                break;
-//            case "Jordan":
-//                zipCode.setText("+962");
-//                break;
-//            case "Germany":
-//                zipCode.setText("+49");
-//                break;
-//            case "Spain":
-//                zipCode.setText("+34");
-//                break;
-//            case "Japan":
-//                zipCode.setText("+81");
-//                break;
-//            default:
-//                zipCode.setText("---");
-//        }
-//    }
-//
-//    private boolean isValidEmail(String email) { // real email ? !!!
-//        String domain = "";
-//        boolean isValidPattern = Patterns.EMAIL_ADDRESS.matcher(email).matches();
-//        if (isValidPattern) {
-//            domain = getDomainFromEmail(email);
-//        }
-//        boolean validDomain = domain.length() >= 4 && (domain.endsWith(".com") || domain.endsWith(".edu"));
-//        return isValidPattern && validDomain;
-//    }
+        cityAuto.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
+        });
+
+        countryAuto.setKeyListener(null);
+        cityAuto.setOnKeyListener(null);
+        genderAuto.setKeyListener(null);
+        // select the first item from the list
+        countryAuto.setText(countriesAdapter.getItem(0), false);
+        phoneLayout.setPrefixText("+970 ");
+        countryAuto.setOnItemClickListener((parent, view, position, id) -> {
+            String country1 = countryAuto.getText().toString();
+            ArrayAdapter<String> citiesAdapter = null;
+            switch (country1) {
+                case "PS":
+                    phoneLayout.setPrefixText("+970 ");
+                    citiesAdapter = new ArrayAdapter<>(SignUpActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.cities_Palestine));
+                    break;
+                case "JO":
+                    phoneLayout.setPrefixText("+962 ");
+                    citiesAdapter = new ArrayAdapter<>(SignUpActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.cities_Jordan));
+                    break;
+                case "DE":
+                    phoneLayout.setPrefixText("+49 ");
+                    citiesAdapter = new ArrayAdapter<>(SignUpActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.cities_Germany));
+                    break;
+                case "ES":
+                    phoneLayout.setPrefixText("+34 ");
+                    citiesAdapter = new ArrayAdapter<>(SignUpActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.cities_Spain));
+                    break;
+                case "JP":
+                    phoneLayout.setPrefixText("+81 ");
+                    citiesAdapter = new ArrayAdapter<>(SignUpActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.cities_Japan));
+                    break;
+            }
+            cityAuto.setAdapter(citiesAdapter);
+        });
+        Button sign_up = findViewById(R.id.signUp_button);
+        sign_up.setOnClickListener(v->{
+            if (emailLayout.getError() != null || passwordLayout.getError() != null || confirmPasswordLayout.getError() != null || firstNameLayout.getError() != null || lastNameLayout.getError() != null || phone.getText().toString().isEmpty()) {
+                Toast.makeText(SignUpActivity.this, "Please fill in all fields correctly", Toast.LENGTH_SHORT).show();
+            } else {
+                // check if the email is already registered
+                DatabaseManager db = MyApplication.getDatabaseManager();
+                if (db.isEmailUsed(email.getText().toString())) {
+                    Toast.makeText(SignUpActivity.this, "This email is already registered", Toast.LENGTH_SHORT).show();
+                    emailLayout.setError("This email is already registered");
+                    return;
+                } else {
+                    // encrypt the password
+                    String hashedPassword = PasswordHasher.hashPassword(password.getText().toString());
+                    // insert the customer into the database
+                    db.insertCustomer(email.getText().toString().trim(), firstName.getText().toString().trim(), lastName.getText().toString().trim(), hashedPassword, phone.getText().toString().trim(), countryAuto.getText().toString(), cityAuto.getText().toString());
+                    Toast.makeText(SignUpActivity.this, "You have successfully registered", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignUpActivity.this, SignInAsCustomerActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
     }
 }

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,22 +16,15 @@
         android:theme="@style/Theme.FinalProject"
         tools:targetApi="31">
         <activity
+            android:name=".HomeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_home"
+            android:theme="@style/Theme.FinalProject.NoActionBar" />
+        <activity
             android:name=".SignInAsCustomerActivity"
             android:exported="false" />
         <activity
             android:name=".ConnectActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".SignUpActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".SignInActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -37,6 +33,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".SignInActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
 
         <meta-data
             android:name="preloaded_fonts"

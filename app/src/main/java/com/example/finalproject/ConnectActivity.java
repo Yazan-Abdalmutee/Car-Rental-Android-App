@@ -97,7 +97,7 @@ public class ConnectActivity extends AppCompatActivity {
         protected void onPostExecute(String apiResult) {
             // check if the API call was successful using the code
             if (apiResult != null) {
-                Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
+                Intent intent = new Intent(ConnectActivity.this, SignInAsCustomerActivity.class);
                 startActivity(intent);
             }
         }

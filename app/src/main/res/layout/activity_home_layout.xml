@@ -12,19 +12,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#BDDCD8D8"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_home"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="#00FFFFFF"
             android:minHeight="?attr/actionBarSize" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/layout_root"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigaton"
+        android:id="@+id/navigation"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

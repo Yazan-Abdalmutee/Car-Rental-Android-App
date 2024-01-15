@@ -40,7 +40,16 @@ public class SignInActivity extends AppCompatActivity {
         signIn.setOnClickListener(v -> {
             if (email.getText().toString().isEmpty() || Objects.requireNonNull(password).getText().toString().isEmpty()) {
                 Toast.makeText(SignInActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                return;
+            } else {
+                DatabaseManager databaseManager = MyApplication.getDatabaseManager();
+                String HashedPassword = PasswordHasher.hashPassword(password.getText().toString());
+                if (databaseManager.isLoginCredentialsValid(email.getText().toString(), HashedPassword)) {
+                    Intent intent = new Intent(SignInActivity.this, SignInAsCustomerActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(SignInActivity.this, "Incorrect email or password", Toast.LENGTH_SHORT).show();
+                }
             }
 
 
