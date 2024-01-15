@@ -1,7 +1,6 @@
 package com.example.finalproject;
 
 
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -27,7 +26,7 @@ public class DatabaseManager {
 
     // Insert a new customer into the CUSTOMER_TABLE
     public void insertCustomer(String email, String firstName, String lastName, String passwordHashed,
-                               String phoneNumber, String country, String city) {
+                               String phoneNumber,String gender, String country, String city) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.CUSTOMER_EMAIL, email);
         values.put(DatabaseHelper.CUSTOMER_FIRST_NAME, firstName);
@@ -36,22 +35,25 @@ public class DatabaseManager {
         values.put(DatabaseHelper.CUSTOMER_PHONE_NUMBER, phoneNumber);
         values.put(DatabaseHelper.CUSTOMER_COUNTRY, country);
         values.put(DatabaseHelper.CUSTOMER_CITY, city);
+        values.put(DatabaseHelper.CUSTOMER_GENDER, gender);
+        values.put(DatabaseHelper.IS_ADMIN, 0);
 
         database.insert(DatabaseHelper.CUSTOMER_TABLE, null, values);
     }
 
     // Insert a new car into the CAR_TABLE
-    public long insertCar(String carName, String carFactory, String carModel, int carYear,
-                          int carPrice, String carImage) {
+    public void insertCar(String carName, String carDrive, String carModel, int carYear,
+                          int carPrice, String carVClass, String carFuel) {
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.CAR_NAME, carName);
-        values.put(DatabaseHelper.CAR_FACTORY, carFactory);
+        values.put(DatabaseHelper.CAR_MAKE, carName);
+        values.put(DatabaseHelper.CAR_DRIVE, carDrive);
         values.put(DatabaseHelper.CAR_MODEL, carModel);
         values.put(DatabaseHelper.CAR_YEAR, carYear);
         values.put(DatabaseHelper.CAR_PRICE, carPrice);
-        values.put(DatabaseHelper.CAR_IMAGE, carImage);
+        values.put(DatabaseHelper.CAR_VCLASS, carVClass);
+        values.put(DatabaseHelper.CAR_FUEL, carFuel);
 
-        return database.insert(DatabaseHelper.CAR_TABLE, null, values);
+        database.insert(DatabaseHelper.CAR_TABLE, null, values);
     }
 
     // Insert a new reservation into the RESERVATION_TABLE
@@ -126,4 +128,19 @@ public class DatabaseManager {
         }
         // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
     }
+
+    public int getCarCount() {
+        try (Cursor cursor = database.query(
+                DatabaseHelper.CAR_TABLE,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        )) {
+            return cursor != null ? cursor.getCount() : 0;
+        }
+    }
+
 }

@@ -50,6 +50,7 @@
                 android:icon="@drawable/profile_selector"
                 android:title="@string/profile" />
             <item
+                android:id="@+id/contactMenuItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
@@ -58,7 +59,7 @@
 
 
             <item
-                android:id="@+id/logout_group"
+                android:id="@+id/signOutMenuItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/baseline_logout_24"

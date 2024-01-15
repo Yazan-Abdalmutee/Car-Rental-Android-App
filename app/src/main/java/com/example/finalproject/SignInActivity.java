@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,8 +25,17 @@ public class SignInActivity extends AppCompatActivity {
         EditText password = passwordLayout.getEditText();
         TextInputLayout emailLayout = findViewById(R.id.email_text_input);
         EditText email = emailLayout.getEditText();
-        //check if the email is correctly formatted
+        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
+        if (sharedPreferencesManager.getSignedIn()) {
+            Intent intent = new Intent(SignInActivity.this, CustomerNavigator.class);
+            startActivity(intent);
+            finish();
+        }
         assert email != null;
+        if (sharedPreferencesManager.getEmail() != null) {
+            email.setText(sharedPreferencesManager.getEmail());
+        }
+        //check if the email is correctly formatted
         email.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus && !email.getText().toString().isEmpty()) {
                 if (!Patterns.EMAIL_ADDRESS.matcher(email.getText()).matches()) {
@@ -45,6 +55,13 @@ public class SignInActivity extends AppCompatActivity {
                 String HashedPassword = PasswordHasher.hashPassword(password.getText().toString());
                 if (databaseManager.isLoginCredentialsValid(email.getText().toString(), HashedPassword)) {
                     Intent intent = new Intent(SignInActivity.this, CustomerNavigator.class);
+                    CheckBox rememberMe = findViewById(R.id.rememberMe);
+                    if (rememberMe.isChecked()) {
+                        sharedPreferencesManager.saveEmail(email.getText().toString());
+                    } else {
+                        sharedPreferencesManager.saveEmail(null);
+
+                    }
                     startActivity(intent);
                     finish();
                 } else {
@@ -58,7 +75,6 @@ public class SignInActivity extends AppCompatActivity {
         signUp.setOnClickListener(v -> {
             Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
             SignInActivity.this.startActivity(intent);
-            finish();
         });
 
     }

@@ -1,6 +1,7 @@
 package com.example.finalproject;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,13 +26,13 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
     Toolbar toolbar;
     LinearLayout root_layout;
     FragmentManager fragmentManager;
-
+    SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_layout);
-
+        sharedPreferencesManager.setSignedIn(true);
         toolbar = findViewById(R.id.toolbar_home);
         toolbar.setTitle("Home");
         drawerLayout = findViewById(R.id.drawer);
@@ -77,7 +78,19 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                 fragmentTransaction.replace(R.id.layout_root, new CarMenuFragment(), "CarMenuFrag");
                 fragmentTransaction.commit();
             }
+        } else if (id == R.id.contactMenuItem) {
+            if (!(currentFragment instanceof ContactFragment)) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.layout_root, new ContactFragment(), "ContactFrag");
+                fragmentTransaction.commit();
+            }
+        } else if (id == R.id.signOutMenuItem) {
+            sharedPreferencesManager.setSignedIn(false);
+            Intent intent = new Intent(CustomerNavigator.this, SignInActivity.class);
+            startActivity(intent);
+            finish();
         }
+
         // close drawer when item is tapped
         drawerLayout.closeDrawers();
         return true;
@@ -87,4 +100,5 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         getMenuInflater().inflate(R.menu.top_app_bar, menu);
         return true;
     }
+
 }

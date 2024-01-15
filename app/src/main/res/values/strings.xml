@@ -102,6 +102,9 @@
     <string name="main_menu_group_2">Utility</string>
     <string name="profile">Profile</string>
     <string name="search">Search</string>
+    <string name="mail">Mail</string>
+    <string name="maps">Maps</string>
+    <string name="call">Call</string>
 
 
 </resources>

@@ -8,8 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +27,6 @@ import java.net.URL;
 // create a car record class
 
 public class ConnectActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // hide the action bar
@@ -55,7 +59,6 @@ public class ConnectActivity extends AppCompatActivity {
             new NetworkTask().execute();
         });
 
-
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -64,7 +67,7 @@ public class ConnectActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                String link = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?select=make%2Cmodel%2Cdrive%2Cfueltype%2Cyear%2Cvclass%2Ccreatedon%2Cmodifiedon&limit=10";
+                String link = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?select=make%2Cmodel%2Cdrive%2Cfueltype%2Cyear%2Cvclass&limit=20";
                 URL url = new URL(link); // Replace with your API endpoint
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
@@ -90,9 +93,47 @@ public class ConnectActivity extends AppCompatActivity {
         protected void onPostExecute(String apiResult) {
             // check if the API call was successful using the code
             if (apiResult != null) {
-                Intent intent = new Intent(ConnectActivity.this, CustomerNavigator.class);
-                startActivity(intent);
+                DatabaseManager db = MyApplication.getDatabaseManager();
+                if (db.getCarCount() == 0) {
+
+
+                    try {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        JsonNode jsonNode = objectMapper.readTree(apiResult);
+
+                        // Remove "total_count" attribute
+                        if (jsonNode.has("total_count")) {
+                            ((ObjectNode) jsonNode).remove("total_count");
+                        }
+                        JsonNode resultsArray = jsonNode.get("results");
+                        if (resultsArray.isArray()) {
+                            for (JsonNode result : resultsArray) {
+                                String make = result.get("make").asText();
+                                String model = result.get("model").asText();
+                                String drive = result.get("drive").asText();
+                                String fuelType = result.get("fueltype").asText();
+                                int year = Integer.parseInt(result.get("year").asText());
+                                String vehicleClass = result.get("vclass").asText();
+                                int price = (int) (Math.random() * 1000 + 1000);
+                                db.insertCar(make, drive, model, price, year, vehicleClass, fuelType);
+                            }
+                            Toast toast = Toast.makeText(ConnectActivity.this, "Loaded " + db.getCarCount() + " Cars", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            } else {
+                Toast.makeText(ConnectActivity.this, "API Call Failed", Toast.LENGTH_SHORT).show();
             }
         }
+
     }
 }

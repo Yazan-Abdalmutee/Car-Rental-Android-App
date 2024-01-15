@@ -31,7 +31,6 @@ public class SignUpActivity extends AppCompatActivity {
         signIn.setOnClickListener(v -> {
             Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
             SignUpActivity.this.startActivity(intent);
-            finish();
         });
 
 
@@ -251,7 +250,7 @@ public class SignUpActivity extends AppCompatActivity {
                     // encrypt the password
                     String hashedPassword = PasswordHasher.hashPassword(password.getText().toString());
                     // insert the customer into the database
-                    db.insertCustomer(email.getText().toString().trim(), firstName.getText().toString().trim(), lastName.getText().toString().trim(), hashedPassword, phone.getText().toString().trim(), countryAuto.getText().toString(), cityAuto.getText().toString());
+                    db.insertCustomer(email.getText().toString().trim(), firstName.getText().toString().trim(), lastName.getText().toString().trim(), hashedPassword, phone.getText().toString().trim(),genderAuto.getText().toString(), countryAuto.getText().toString(), cityAuto.getText().toString());
                     Toast.makeText(SignUpActivity.this, "You have successfully registered", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SignUpActivity.this, CustomerNavigator.class);
                     startActivity(intent);
