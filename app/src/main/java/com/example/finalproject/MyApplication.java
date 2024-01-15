@@ -1,7 +1,10 @@
 package com.example.finalproject;
 
 import android.app.Application;
+import android.view.WindowManager;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class MyApplication extends Application {
 
@@ -13,8 +16,9 @@ public class MyApplication extends Application {
         // Initialize and open the database
         databaseManager = new DatabaseManager(this);
         databaseManager.open();
-    }
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+    }
     public static DatabaseManager getDatabaseManager() {
         return databaseManager;
     }

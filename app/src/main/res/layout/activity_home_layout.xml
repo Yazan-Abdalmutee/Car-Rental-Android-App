@@ -5,32 +5,36 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".SignInAsCustomerActivity"
-    tools:openDrawer="start">
+    android:background="@color/white"
+    tools:context=".SignInAsCustomerActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#BDDCD8D8"
+
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_home"
             android:layout_width="match_parent"
+            android:layout_marginEnd="5dp"
             android:layout_height="wrap_content"
-            android:background="#00FFFFFF"
+            android:background="@color/white"
+
+            app:titleTextColor="@color/black"
+            app:menu="@menu/top_app_bar"
             android:minHeight="?attr/actionBarSize" />
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="match_parent">
             <LinearLayout
                 android:id="@+id/layout_root"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical">
+
+            </LinearLayout>
         </ScrollView>
 
     </LinearLayout>
@@ -42,5 +46,4 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/header"
         app:menu="@menu/main_menu" />
-
 </androidx.drawerlayout.widget.DrawerLayout>

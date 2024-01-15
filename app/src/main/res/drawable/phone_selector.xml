@@ -1,0 +1,5 @@
+<!-- icon_home_selector.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/baseline_local_phone_24" android:state_checked="true"/>
+    <item android:drawable="@drawable/outline_local_phone_24"/>
+</selector>

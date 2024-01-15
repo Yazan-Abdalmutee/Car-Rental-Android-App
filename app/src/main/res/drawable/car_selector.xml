@@ -1,0 +1,5 @@
+<!-- icon_home_selector.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/baseline_directions_car_24" android:state_checked="true"/>
+    <item android:drawable="@drawable/outline_directions_car_24"/>
+</selector>

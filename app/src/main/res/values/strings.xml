@@ -98,6 +98,8 @@
     <string name="special_offers">Offers</string>
     <string name="call_us_or_find_us">Contact</string>
     <string name="logout">Logout</string>
+    <string name="main_menu_group_1">Navigation</string>
+    <string name="main_menu_group_2">Utility</string>
 
 
 </resources>

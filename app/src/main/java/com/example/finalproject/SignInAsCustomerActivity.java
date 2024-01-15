@@ -2,6 +2,7 @@ package com.example.finalproject;
 
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
@@ -33,11 +34,12 @@ public class SignInAsCustomerActivity extends AppCompatActivity implements Navig
         setContentView(R.layout.activity_home_layout);
 
         toolbar = findViewById(R.id.toolbar_home);
+        toolbar.setTitle("Home");
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.navigation);
-        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.black));
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
@@ -62,6 +64,7 @@ public class SignInAsCustomerActivity extends AppCompatActivity implements Navig
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.layout_root);
 
         int id = item.getItemId();
+        if (item.isCheckable()) toolbar.setTitle(item.getTitle());
         if (id == R.id.homeItem) {
             if (!(currentFragment instanceof HomeFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -76,6 +79,13 @@ public class SignInAsCustomerActivity extends AppCompatActivity implements Navig
                 fragmentTransaction.commit();
             }
         }
+        // close drawer when item is tapped
+        drawerLayout.closeDrawers();
+        return true;
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.top_app_bar, menu);
         return true;
     }
 }

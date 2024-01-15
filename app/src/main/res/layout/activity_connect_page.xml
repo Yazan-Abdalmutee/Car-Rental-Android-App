@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#225aeb"
-    android:backgroundTintMode="src_in"
+    android:background="@color/paypal_blue"
+    android:statusBarColor="@color/paypal_blue"
     android:padding="20dp"
     tools:context=".ConnectActivity">
 
