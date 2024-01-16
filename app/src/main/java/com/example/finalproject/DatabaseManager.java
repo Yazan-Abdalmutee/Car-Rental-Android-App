@@ -28,7 +28,7 @@ public class DatabaseManager {
     public void insertCustomer(String email, String firstName, String lastName, String passwordHashed,
                                String phoneNumber, String gender, String country, String city) {
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.CUSTOMER_EMAIL, email);
+        values.put(DatabaseHelper.CUSTOMER_EMAIL, email.toLowerCase());
         values.put(DatabaseHelper.CUSTOMER_FIRST_NAME, firstName);
         values.put(DatabaseHelper.CUSTOMER_LAST_NAME, lastName);
         values.put(DatabaseHelper.CUSTOMER_PASSWORD_HASHED, passwordHashed);
@@ -60,7 +60,7 @@ public class DatabaseManager {
     public long insertReservation(int carId, String email, String reservationDate) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.RESERVATION_CAR_ID, carId);
-        values.put(DatabaseHelper.RESERVATION_EMAIL, email);
+        values.put(DatabaseHelper.RESERVATION_EMAIL, email.toLowerCase());
         values.put(DatabaseHelper.RESERVATION_DATE, reservationDate);
 
         return database.insert(DatabaseHelper.RESERVATION_TABLE, null, values);
@@ -70,7 +70,7 @@ public class DatabaseManager {
     public long insertFavorite(int carId, String email) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.FAVORITE_CAR_ID, carId);
-        values.put(DatabaseHelper.FAVORITE_EMAIL, email);
+        values.put(DatabaseHelper.FAVORITE_EMAIL, email.toLowerCase());
 
         return database.insert(DatabaseHelper.FAVORITE_TABLE, null, values);
     }
@@ -86,15 +86,17 @@ public class DatabaseManager {
     }
 
     public Cursor getCustomerReservations(String email) {
+        email = email.toLowerCase();
         return database.query(DatabaseHelper.RESERVATION_TABLE, null, DatabaseHelper.RESERVATION_EMAIL + " = ?", new String[]{email}, null, null, null);
     }
 
     public Cursor getCustomerFavorites(String email) {
+        email = email.toLowerCase();
         return database.query(DatabaseHelper.FAVORITE_TABLE, null, DatabaseHelper.FAVORITE_EMAIL + " = ?", new String[]{email}, null, null, null);
     }
 
     public boolean isEmailUsed(String email) {
-
+        email = email.toLowerCase();
         try (Cursor cursor = database.query(
                 DatabaseHelper.CUSTOMER_TABLE,
                 null,
@@ -113,6 +115,7 @@ public class DatabaseManager {
     }
 
     public boolean isLoginCredentialsValid(String email, String password) {
+        email = email.toLowerCase();
         try (Cursor cursor = database.query(
                 DatabaseHelper.CUSTOMER_TABLE,
                 null,
@@ -145,8 +148,8 @@ public class DatabaseManager {
 
 
     public Cursor customerInfo(String email) {
+        email = email.toLowerCase();
         Cursor cursor = null;
-
         try {
             cursor = database.query(
                     DatabaseHelper.CUSTOMER_TABLE,
@@ -168,17 +171,7 @@ public class DatabaseManager {
     }
 
 
-    // Helper method to safely retrieve string values
-    private String getColumnValue(Cursor cursor, String columnName) {
-        int columnIndex = cursor.getColumnIndex(columnName);
-        return (columnIndex != -1) ? cursor.getString(columnIndex) : null;
-    }
 
-    // Helper method to safely retrieve integer values
-    private int getColumnIntValue(Cursor cursor, String columnName) {
-        int columnIndex = cursor.getColumnIndex(columnName);
-        return (columnIndex != -1) ? cursor.getInt(columnIndex) : 0; // or another default value as needed
-    }
 
     public void editCustomer(String email, String firstName, String lastName, String phone, String password) {
         // Assuming 'database' is your SQLiteDatabase instance

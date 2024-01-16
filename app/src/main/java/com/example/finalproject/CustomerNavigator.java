@@ -55,8 +55,6 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
 
                     // Ensure that integer columns have valid values
                     @SuppressLint("Range") int isAdmin = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.IS_ADMIN));
-                    isAdmin = Math.max(0, isAdmin);
-
                     // Save the retrieved information into SharedPreferences
                     sharedPreferencesManager.saveUserInfo(customerEmail, firstName, lastName, passwordHashed,
                             phoneNumber, country, city, gender, isAdmin);
