@@ -67,7 +67,6 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 // Do nothing
-
             }
 
             @Override
@@ -203,7 +202,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         countryAuto.setKeyListener(null);
-        cityAuto.setOnKeyListener(null);
+        cityAuto.setKeyListener(null);
         genderAuto.setKeyListener(null);
         // select the first item from the list
         countryAuto.setText(countriesAdapter.getItem(0), false);

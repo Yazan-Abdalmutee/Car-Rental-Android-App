@@ -51,13 +51,13 @@ public class ProfileFragment extends Fragment {
         switch (sharedPreferencesManager.getCountry()) {
             case "PS":
             case "default":
-                phoneLayout.setPrefixText("+970");
+                phoneLayout.setPrefixText("+970 ");
                 break;
             case "JO":
-                phoneLayout.setPrefixText("+962");
+                phoneLayout.setPrefixText("+962 ");
                 break;
             case "DE":
-                phoneLayout.setPrefixText("+49");
+                phoneLayout.setPrefixText("+49 ");
                 break;
             case "ES":
                 phoneLayout.setPrefixText("+34 ");
