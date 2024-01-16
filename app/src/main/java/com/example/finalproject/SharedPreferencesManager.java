@@ -124,4 +124,8 @@ public class SharedPreferencesManager {
         editor.putString(DatabaseHelper.CUSTOMER_PASSWORD_HASHED, passwordHashed);
         editor.apply();
     }
+
+    public String getPasswordHashed() {
+        return sharedPreferences.getString(DatabaseHelper.CUSTOMER_PASSWORD_HASHED, "");
+    }
 }

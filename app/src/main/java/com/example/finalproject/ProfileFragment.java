@@ -42,7 +42,6 @@ public class ProfileFragment extends Fragment {
         TextView email = view.findViewById(R.id.email_textField);
 
         SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(getContext());
-        Toast.makeText(getContext(), sharedPreferencesManager.getFirstName(), Toast.LENGTH_SHORT).show();
         name.setText(sharedPreferencesManager.getFirstName() + " " + sharedPreferencesManager.getLastName());
         email.setText(sharedPreferencesManager.getEmail());
         assert getActivity() != null;
@@ -124,14 +123,30 @@ public class ProfileFragment extends Fragment {
                 Toast.makeText(getContext(), "Please fix the errors", Toast.LENGTH_SHORT).show();
                 return;
             }
-
+            // if all empty, do nothing
             if (firstName.getText().toString().isEmpty() && lastName.getText().toString().isEmpty() && phone.getText().toString().isEmpty() && password.getText().toString().isEmpty() && confirmPassword.getText().toString().isEmpty()) {
-                Toast.makeText(getContext(), "Please fill at least one field", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "No changes made", Toast.LENGTH_SHORT).show();
                 return;
             }
+            // if one of the password fields is empty, do nothing
+            if (password.getText().toString().isEmpty() ^ confirmPassword.getText().toString().isEmpty()) {
+                Toast.makeText(getContext(), "Please fill both password fields", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (firstName.getText().toString().isEmpty())
+                firstName.setText(sharedPreferencesManager.getFirstName());
+            if (lastName.getText().toString().isEmpty())
+                lastName.setText(sharedPreferencesManager.getLastName());
+            if (phone.getText().toString().isEmpty())
+                phone.setText(sharedPreferencesManager.getPhone());
+            if (password.getText().toString().isEmpty())
+                password.setText(sharedPreferencesManager.getPasswordHashed());
+            if (confirmPassword.getText().toString().isEmpty())
+                confirmPassword.setText(sharedPreferencesManager.getPasswordHashed());
 
             DatabaseManager databaseManager = MyApplication.getDatabaseManager();
-
+            passwordLayout.setErrorIconDrawable(null);
+            confirmPasswordLayout.setErrorIconDrawable(null);
             String passwordHashed = PasswordHasher.hashPassword(password.getText().toString());
             databaseManager.editCustomer(sharedPreferencesManager.getEmail(), firstName.getText().toString(), lastName.getText().toString(), phone.getText().toString(), password.getText().toString());
             sharedPreferencesManager.setFirstName(firstName.getText().toString());
