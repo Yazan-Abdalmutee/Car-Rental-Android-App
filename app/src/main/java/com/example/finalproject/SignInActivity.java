@@ -33,7 +33,7 @@ public class SignInActivity extends AppCompatActivity {
         }
         assert email != null;
         if (sharedPreferencesManager.getEmail() != null) {
-            email.setText(sharedPreferencesManager.getEmail());
+            email.setText(sharedPreferencesManager.getRememberMe());
         }
         //check if the email is correctly formatted
         email.setOnFocusChangeListener((v, hasFocus) -> {
@@ -57,11 +57,14 @@ public class SignInActivity extends AppCompatActivity {
                     Intent intent = new Intent(SignInActivity.this, CustomerNavigator.class);
                     CheckBox rememberMe = findViewById(R.id.rememberMe);
                     if (rememberMe.isChecked()) {
-                        sharedPreferencesManager.saveEmail(email.getText().toString());
-                    } else {
-                        sharedPreferencesManager.saveEmail(null);
+                        sharedPreferencesManager.rememberMe(email.getText().toString());
 
+                    } else {
+                        sharedPreferencesManager.rememberMe(null);
                     }
+                    sharedPreferencesManager.setEmail(email.getText().toString());
+
+
                     startActivity(intent);
                     finish();
                 } else {

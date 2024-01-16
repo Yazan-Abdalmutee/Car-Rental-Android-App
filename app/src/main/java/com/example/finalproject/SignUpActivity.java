@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private boolean isValidPassword(String password) {
+    public static boolean isValidPassword(String password) {
         String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_=+-])(?=\\S+$).{5,}$";
         return password != null && password.matches(regex);
     }
@@ -72,7 +72,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!isValidPassword(password.getText().toString())) {
+                if (!isValidPassword(password.getText().toString()) && !password.getText().toString().isEmpty()) {
                     if (passwordLayout.getError() != null) return;
                     passwordLayout.setError("Password must contain at least 5 characters, one uppercase, one lowercase, one number and one special character");
                 } else
@@ -94,7 +94,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!confirmPassword.getText().toString().equals(password.getText().toString())) {
+                if (!confirmPassword.getText().toString().equals(password.getText().toString()) && !confirmPassword.getText().toString().isEmpty()) {
                     if (confirmPasswordLayout.getError() != null) return;
                     confirmPasswordLayout.setError("Passwords do not match");
                 } else
@@ -116,7 +116,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2){
-                if (!Patterns.EMAIL_ADDRESS.matcher(email.getText()).matches()) {
+                if (!Patterns.EMAIL_ADDRESS.matcher(email.getText()).matches() && !email.getText().toString().isEmpty()) {
                     if (emailLayout.getError() != null) return;
                     emailLayout.setError("Please enter a valid email address");
                 } else
@@ -140,7 +140,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2){
-                if (firstName.getText().toString().length() < 3) {
+                if (firstName.getText().toString().length() < 3 && firstName.getText().toString().length() > 0) {
                     if (firstNameLayout.getError() != null) return;
                     firstNameLayout.setError("First name is too short");
                 } else
@@ -161,7 +161,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2){
-                if (lastName.getText().toString().length() < 3) {
+                if (lastName.getText().toString().length() < 3 && lastName.getText().toString().length() > 0) {
                     if (lastNameLayout.getError() != null) return;
                     lastNameLayout.setError("Last name is too short");
                 } else
@@ -233,6 +233,7 @@ public class SignUpActivity extends AppCompatActivity {
                     citiesAdapter = new ArrayAdapter<>(SignUpActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.cities_Japan));
                     break;
             }
+            phoneLayout.setPrefixTextAppearance(R.style.prefixTextAppearance);
             cityAuto.setAdapter(citiesAdapter);
         });
         Button sign_up = findViewById(R.id.signUp_button);
@@ -253,6 +254,8 @@ public class SignUpActivity extends AppCompatActivity {
                     db.insertCustomer(email.getText().toString().trim(), firstName.getText().toString().trim(), lastName.getText().toString().trim(), hashedPassword, phone.getText().toString().trim(),genderAuto.getText().toString(), countryAuto.getText().toString(), cityAuto.getText().toString());
                     Toast.makeText(SignUpActivity.this, "You have successfully registered", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SignUpActivity.this, CustomerNavigator.class);
+                    SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
+                    sharedPreferencesManager.setEmail(email.getText().toString());
                     startActivity(intent);
                     finish();
                 }

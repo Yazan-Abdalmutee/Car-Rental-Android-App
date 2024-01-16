@@ -17,6 +17,7 @@
         app:civ_border_color="#FF000000"/>
 
         <TextView
+            android:id="@+id/nameHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -29,6 +30,7 @@
             android:textColor="?attr/colorOnSurface" />
 
         <TextView
+            android:id="@+id/emailHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
