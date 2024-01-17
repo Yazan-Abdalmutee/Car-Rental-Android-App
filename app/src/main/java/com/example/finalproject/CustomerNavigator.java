@@ -88,7 +88,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                 fragmentTransaction.replace(R.id.layout_root, new HomeFragment(), "HomeFrag");
                 fragmentTransaction.commit();
             }
-        } else if (id == R.id.carMenuItem && inCarMenuPage == false) {
+        } else if ((id == R.id.carMenuItem) && (!inCarMenuPage)) {
 
             DatabaseManager db = MyApplication.getDatabaseManager();
             Cursor cursor = db.getAllCars();
@@ -110,6 +110,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
 
         MenuItem searchItem = menu.findItem(R.id.app_bar_search);
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+        assert searchView != null;
         searchView.setQueryHint("Type here car model");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -155,22 +156,14 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         sliderPrice = filterDialog.findViewById(R.id.price_range_slider);
 
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        saveButton.setOnClickListener(v -> {
 
-                Cursor cursor = getDataAfterFiltering();
-                listOfFragments = getCars(cursor);
-                filterDialog.dismiss();
-            }
+            Cursor cursor = getDataAfterFiltering();
+            listOfFragments = getCars(cursor);
+            filterDialog.dismiss();
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                filterDialog.dismiss();
-            }
-        });
+        cancelButton.setOnClickListener(v -> filterDialog.dismiss());
         filterDialog.show();
     }
 
