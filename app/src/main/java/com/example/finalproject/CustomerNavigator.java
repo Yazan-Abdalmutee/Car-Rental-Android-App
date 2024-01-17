@@ -113,6 +113,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         if (id == R.id.homeItem) {
             if (!(currentFragment instanceof HomeFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
 
                 fragmentTransaction.replace(R.id.layout_root, new HomeFragment(), "HomeFrag");
                 fragmentTransaction.commit();
@@ -121,12 +122,16 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
 
             if (!(currentFragment instanceof CarMenuFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
+
                 fragmentTransaction.replace(R.id.layout_root, new CarMenuFragment(), "CarMenuFrag");
                 fragmentTransaction.commit();
             }
         } else if (id == R.id.contactMenuItem) {
             if (!(currentFragment instanceof ContactFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
+
                 fragmentTransaction.replace(R.id.layout_root, new ContactFragment(), "ContactFrag");
                 fragmentTransaction.commit();
             }
@@ -140,6 +145,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
             if (!(currentFragment instanceof ProfileFragment)) {
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
                 fragmentTransaction.replace(R.id.layout_root, new ProfileFragment(), "ProfileFrag");
                 fragmentTransaction.commit();
 
