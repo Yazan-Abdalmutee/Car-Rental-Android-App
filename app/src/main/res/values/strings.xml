@@ -108,6 +108,10 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="delete_customer">Delete Customer</string>
+    <string name="add_admin">Add Admin</string>
+    <string name="all_reservations">All Reservations</string>
+    <string name="admin">Admin</string>
 
 
 </resources>

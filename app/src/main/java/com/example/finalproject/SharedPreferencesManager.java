@@ -128,4 +128,8 @@ public class SharedPreferencesManager {
     public String getPasswordHashed() {
         return sharedPreferences.getString(DatabaseHelper.CUSTOMER_PASSWORD_HASHED, "");
     }
+
+    public int getIsAdmin() {
+        return sharedPreferences.getInt(DatabaseHelper.IS_ADMIN, 0);
+    }
 }

@@ -57,14 +57,12 @@ public class SignInActivity extends AppCompatActivity {
                     Intent intent = new Intent(SignInActivity.this, CustomerNavigator.class);
                     CheckBox rememberMe = findViewById(R.id.rememberMe);
                     if (rememberMe.isChecked()) {
-                        sharedPreferencesManager.rememberMe(email.getText().toString());
+                        sharedPreferencesManager.rememberMe(email.getText().toString().toLowerCase());
 
                     } else {
                         sharedPreferencesManager.rememberMe(null);
                     }
-                    sharedPreferencesManager.setEmail(email.getText().toString());
-
-
+                    sharedPreferencesManager.setEmail(email.getText().toString().toLowerCase());
                     startActivity(intent);
                     finish();
                 } else {
