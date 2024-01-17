@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="5dp"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Make"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/ship_group_make"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="12dp"
+        android:foregroundGravity="center">
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:gravity="center_horizontal"
+            android:text="Ford"
+            android:textSize="12sp" />
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:checked="false"
+            android:text="Kia"
+            android:textSize="12sp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip5"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BMW" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip7"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:text="Audi" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fuel Type"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/ship_group_fuelType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="12dp">
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Premium"
+            android:textSize="12sp" />
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Regular"
+            android:textSize="12sp" />
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="Electricity"
+            android:textSize="12sp" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Year"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/year_range_slider"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="slider_desc"
+        android:stepSize="1"
+        android:valueFrom="1980"
+        android:valueTo="2024"
+        app:values="@array/year_slider_values" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/price_range_slider"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="slider_desc"
+        android:stepSize="1000.0"
+        android:valueFrom="10000"
+        android:valueTo="100000.0"
+        app:values="@array/price_slider_values" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/filter_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/filter_save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:text="Save" />
+    </LinearLayout>
+
+</LinearLayout>
+
+
+<!--<TextView&ndash;&gt;-->
+<!--&lt;!&ndash;        android:id="@+id/textView"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:text="Make Model Drive  FuelType Year Price"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:textSize="20sp"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:textStyle="bold" />-->

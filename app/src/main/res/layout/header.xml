@@ -9,12 +9,12 @@
         android:id="@+id/profile_image"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:layout_gravity="left"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:layout_gravity="left"
         android:src="@drawable/dark_aesthetic_anime_pfp_7"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"/>
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp" />
 
         <TextView
             android:layout_width="wrap_content"

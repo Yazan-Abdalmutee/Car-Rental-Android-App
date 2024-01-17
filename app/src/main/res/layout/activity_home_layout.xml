@@ -6,36 +6,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:openDrawer="start"
-    tools:context=".CustomerNavigator">
+    tools:context=".CustomerNavigator"
+    tools:openDrawer="start">
 
     <LinearLayout
+        android:id="@+id/homeLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
 
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_home"
             android:layout_width="match_parent"
-            android:layout_marginEnd="5dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
             android:background="@color/white"
 
-            app:titleTextColor="@color/black"
+            android:minHeight="?attr/actionBarSize"
             app:menu="@menu/top_app_bar"
-            android:minHeight="?attr/actionBarSize" />
+            app:titleTextColor="@color/black" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:id="@+id/layout_root"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            </LinearLayout>
+                android:orientation="vertical" />
         </ScrollView>
 
     </LinearLayout>
