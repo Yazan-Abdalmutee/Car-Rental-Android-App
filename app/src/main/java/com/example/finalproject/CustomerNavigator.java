@@ -1,16 +1,15 @@
 package com.example.finalproject;
 
 
-import android.app.Dialog;
-import android.database.Cursor;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,6 +46,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
     boolean inCarMenuPage = false;
     private ChipGroup chipGroupMake, chipGroupModel, chipGroupFuelType;
     private RangeSlider sliderYear, sliderPrice;
+    SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -70,8 +70,6 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
 
                     // Ensure that integer columns have valid values
                     @SuppressLint("Range") int isAdmin = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.IS_ADMIN));
-                    isAdmin = Math.max(0, isAdmin);
-
                     // Save the retrieved information into SharedPreferences
                     sharedPreferencesManager.saveUserInfo(customerEmail, firstName, lastName, passwordHashed,
                             phoneNumber, country, city, gender, isAdmin);
@@ -105,6 +103,8 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         root_layout = findViewById(R.id.layout_root);
         fragmentManager = getSupportFragmentManager();
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.homeItem));
+        Menu menu = navigationView.getMenu();
+        menu.findItem(R.id.adminMenu).setVisible(sharedPreferencesManager.getIsAdmin() == 1);
         TextView email = navigationView.getHeaderView(0).findViewById(R.id.emailHeader);
         email.setText(sharedPreferencesManager.getEmail());
         TextView name = navigationView.getHeaderView(0).findViewById(R.id.nameHeader);
@@ -134,49 +134,51 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
             inCarMenuPage = false;
             if (!(currentFragment instanceof HomeFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
 
                 fragmentTransaction.replace(R.id.layout_root, new HomeFragment(), "HomeFrag");
                 fragmentTransaction.commit();
             }
-        } else if (id == R.id.carMenuItem) {
-
-            if (!(currentFragment instanceof CarMenuFragment)) {
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.layout_root, new CarMenuFragment(), "CarMenuFrag");
-                fragmentTransaction.commit();
-            }
-        } else if (id == R.id.contactMenuItem) {
-            if (!(currentFragment instanceof ContactFragment)) {
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.layout_root, new ContactFragment(), "ContactFrag");
-                fragmentTransaction.commit();
-            }
-        } else if (id == R.id.signOutMenuItem) {
-            sharedPreferencesManager.setSignedIn(false);
-            sharedPreferencesManager.clearAllButRememberMe();
-            Intent intent = new Intent(CustomerNavigator.this, SignInActivity.class);
-            startActivity(intent);
-            finish();
-        } else if (id == R.id.profileMenuItem) {
-            if (!(currentFragment instanceof ProfileFragment)) {
-
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.layout_root, new ProfileFragment(), "ProfileFrag");
-                fragmentTransaction.commit();
-
-            }
-        }
-        } else if (id == R.id.carMenuItem && inCarMenuPage == false) {
+        } else if (id == R.id.carMenuItem && !inCarMenuPage) {
 
             DatabaseManager db = MyApplication.getDatabaseManager();
             Cursor cursor = db.getAllCars();
             listOfFragments = getCars(cursor);
 //            if (!(currentFragment instanceof CarMenuFragment)) {
 //                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
+//
 //                fragmentTransaction.replace(R.id.layout_root, new CarMenuFragment(), "CarMenuFrag");
 //                fragmentTransaction.commit();
 //            }
+        } else if (id == R.id.contactMenuItem) {
+            inCarMenuPage = false;
+            if (!(currentFragment instanceof ContactFragment)) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
+
+                fragmentTransaction.replace(R.id.layout_root, new ContactFragment(), "ContactFrag");
+                fragmentTransaction.commit();
+            }
+        } else if (id == R.id.signOutMenuItem) {
+            inCarMenuPage = false;
+            sharedPreferencesManager.setSignedIn(false);
+            sharedPreferencesManager.clearAllButRememberMe();
+            Intent intent = new Intent(CustomerNavigator.this, SignInActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.profileMenuItem) {
+            inCarMenuPage = false;
+            if (!(currentFragment instanceof ProfileFragment)) {
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
+                fragmentTransaction.replace(R.id.layout_root, new ProfileFragment(), "ProfileFrag");
+                fragmentTransaction.commit();
+
+            }
         }
+
         // close drawer when item is tapped
         drawerLayout.closeDrawers();
         return true;
@@ -188,6 +190,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
 
         MenuItem searchItem = menu.findItem(R.id.app_bar_search);
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+        assert searchView != null;
         searchView.setQueryHint("Type here car model");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -233,22 +236,14 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         sliderPrice = filterDialog.findViewById(R.id.price_range_slider);
 
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        saveButton.setOnClickListener(v -> {
 
-                Cursor cursor = getDataAfterFiltering();
-                listOfFragments = getCars(cursor);
-                filterDialog.dismiss();
-            }
+            Cursor cursor = getDataAfterFiltering();
+            listOfFragments = getCars(cursor);
+            filterDialog.dismiss();
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                filterDialog.dismiss();
-            }
-        });
+        cancelButton.setOnClickListener(v -> filterDialog.dismiss());
         filterDialog.show();
     }
 

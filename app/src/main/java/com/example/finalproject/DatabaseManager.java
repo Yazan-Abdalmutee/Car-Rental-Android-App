@@ -26,7 +26,7 @@ public class DatabaseManager {
 
     // Insert a new customer into the CUSTOMER_TABLE
     public void insertCustomer(String email, String firstName, String lastName, String passwordHashed,
-                               String phoneNumber, String gender, String country, String city) {
+                               String phoneNumber,  String gender, String country, String city) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.CUSTOMER_EMAIL, email.toLowerCase());
         values.put(DatabaseHelper.CUSTOMER_FIRST_NAME, firstName);
@@ -146,6 +146,56 @@ public class DatabaseManager {
     }
 
 
+    public Cursor customerInfo(String email) {
+        email = email.toLowerCase();
+        Cursor cursor = null;
+        try {
+            cursor = database.query(
+                    DatabaseHelper.CUSTOMER_TABLE,
+                    null,
+                    DatabaseHelper.CUSTOMER_EMAIL + " = ?",
+                    new String[]{email},
+                    null,
+                    null,
+                    null
+            );
+
+            // Note: If no matching record is found, cursor will be null
+        } catch (Exception e) {
+            // Handle any exceptions here
+            e.printStackTrace();
+        }
+
+        return cursor;
+    }
+
+
+
+
+    public void editCustomer(String email, String firstName, String lastName, String phone, String password) {
+        // Assuming 'database' is your SQLiteDatabase instance
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.CUSTOMER_FIRST_NAME, firstName);
+        values.put(DatabaseHelper.CUSTOMER_LAST_NAME, lastName);
+        values.put(DatabaseHelper.CUSTOMER_PHONE_NUMBER, phone);
+        values.put(DatabaseHelper.CUSTOMER_PASSWORD_HASHED, password);
+
+        // Specify the condition for the update
+        String selection = DatabaseHelper.CUSTOMER_EMAIL + " = ?";
+        String[] selectionArgs = {email};
+
+        // Perform the update operation
+        database.update(
+                DatabaseHelper.CUSTOMER_TABLE,
+                values,
+                selection,
+                selectionArgs
+        );
+
+
+    }
+
     public void clearAllTables() {
 
         String[] allTables = {"CAR", "CUSTOMER", "RESERVATION", "FAVORITE"};
@@ -197,54 +247,4 @@ public class DatabaseManager {
         return cursor;
     }
 
-
-    public Cursor customerInfo(String email) {
-        email = email.toLowerCase();
-        Cursor cursor = null;
-        try {
-            cursor = database.query(
-                    DatabaseHelper.CUSTOMER_TABLE,
-                    null,
-                    DatabaseHelper.CUSTOMER_EMAIL + " = ?",
-                    new String[]{email},
-                    null,
-                    null,
-                    null
-            );
-
-            // Note: If no matching record is found, cursor will be null
-        } catch (Exception e) {
-            // Handle any exceptions here
-            e.printStackTrace();
-        }
-
-        return cursor;
-    }
-
-
-
-
-    public void editCustomer(String email, String firstName, String lastName, String phone, String password) {
-        // Assuming 'database' is your SQLiteDatabase instance
-
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.CUSTOMER_FIRST_NAME, firstName);
-        values.put(DatabaseHelper.CUSTOMER_LAST_NAME, lastName);
-        values.put(DatabaseHelper.CUSTOMER_PHONE_NUMBER, phone);
-        values.put(DatabaseHelper.CUSTOMER_PASSWORD_HASHED, password);
-
-        // Specify the condition for the update
-        String selection = DatabaseHelper.CUSTOMER_EMAIL + " = ?";
-        String[] selectionArgs = {email};
-
-        // Perform the update operation
-        database.update(
-                DatabaseHelper.CUSTOMER_TABLE,
-                values,
-                selection,
-                selectionArgs
-        );
-
-
-    }
 }
