@@ -194,4 +194,64 @@ public class DatabaseManager {
         return cursor;
     }
 
+
+    public Cursor customerInfo(String email) {
+        Cursor cursor = null;
+
+        try {
+            cursor = database.query(
+                    DatabaseHelper.CUSTOMER_TABLE,
+                    null,
+                    DatabaseHelper.CUSTOMER_EMAIL + " = ?",
+                    new String[]{email},
+                    null,
+                    null,
+                    null
+            );
+
+            // Note: If no matching record is found, cursor will be null
+        } catch (Exception e) {
+            // Handle any exceptions here
+            e.printStackTrace();
+        }
+
+        return cursor;
+    }
+
+
+    // Helper method to safely retrieve string values
+    private String getColumnValue(Cursor cursor, String columnName) {
+        int columnIndex = cursor.getColumnIndex(columnName);
+        return (columnIndex != -1) ? cursor.getString(columnIndex) : null;
+    }
+
+    // Helper method to safely retrieve integer values
+    private int getColumnIntValue(Cursor cursor, String columnName) {
+        int columnIndex = cursor.getColumnIndex(columnName);
+        return (columnIndex != -1) ? cursor.getInt(columnIndex) : 0; // or another default value as needed
+    }
+
+    public void editCustomer(String email, String firstName, String lastName, String phone, String password) {
+        // Assuming 'database' is your SQLiteDatabase instance
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.CUSTOMER_FIRST_NAME, firstName);
+        values.put(DatabaseHelper.CUSTOMER_LAST_NAME, lastName);
+        values.put(DatabaseHelper.CUSTOMER_PHONE_NUMBER, phone);
+        values.put(DatabaseHelper.CUSTOMER_PASSWORD_HASHED, password);
+
+        // Specify the condition for the update
+        String selection = DatabaseHelper.CUSTOMER_EMAIL + " = ?";
+        String[] selectionArgs = {email};
+
+        // Perform the update operation
+        database.update(
+                DatabaseHelper.CUSTOMER_TABLE,
+                values,
+                selection,
+                selectionArgs
+        );
+
+
+    }
 }

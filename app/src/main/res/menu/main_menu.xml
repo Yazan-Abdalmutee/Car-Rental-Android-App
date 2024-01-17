@@ -43,7 +43,7 @@
     <item android:title="@string/main_menu_group_2">
         <menu>
             <item
-                android:id="@+id/profile"
+                android:id="@+id/profileMenuItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"

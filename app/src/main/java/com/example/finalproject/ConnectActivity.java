@@ -131,6 +131,7 @@ public class ConnectActivity extends AppCompatActivity {
                     }
                     Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
                     startActivity(intent);
+                    finish();
                 } else {
                     Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
                     startActivity(intent);
