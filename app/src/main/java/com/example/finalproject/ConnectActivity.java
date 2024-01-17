@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 
 
 // create a car record class
@@ -35,6 +36,7 @@ public class ConnectActivity extends AppCompatActivity {
         // --- animation ---
         // animate the button to be faded in after 2 seconds
         Button connect = findViewById(R.id.connectButton);
+
         connect.setAlpha(0f);
         connect.animate().alpha(1f).setDuration(1000).setStartDelay(2000);
         // animate the logo to drop down in 2 seconds
@@ -67,7 +69,7 @@ public class ConnectActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                String link = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?select=make%2Cmodel%2Cdrive%2Cfueltype%2Cyear%2Cvclass&limit=20";
+                String link = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?select=make%2Cmodel%2Cdrive%2Cfueltype%2Cyear%2Cvclass&limit=100";
                 URL url = new URL(link); // Replace with your API endpoint
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
@@ -95,8 +97,6 @@ public class ConnectActivity extends AppCompatActivity {
             if (apiResult != null) {
                 DatabaseManager db = MyApplication.getDatabaseManager();
                 if (db.getCarCount() == 0) {
-
-
                     try {
                         ObjectMapper objectMapper = new ObjectMapper();
                         JsonNode jsonNode = objectMapper.readTree(apiResult);
@@ -106,16 +106,22 @@ public class ConnectActivity extends AppCompatActivity {
                             ((ObjectNode) jsonNode).remove("total_count");
                         }
                         JsonNode resultsArray = jsonNode.get("results");
+                        String[] car_make = {"BMW", "Kia", "Ford", "Audi"};
                         if (resultsArray.isArray()) {
                             for (JsonNode result : resultsArray) {
-                                String make = result.get("make").asText();
-                                String model = result.get("model").asText();
-                                String drive = result.get("drive").asText();
-                                String fuelType = result.get("fueltype").asText();
-                                int year = Integer.parseInt(result.get("year").asText());
-                                String vehicleClass = result.get("vclass").asText();
-                                int price = (int) (Math.random() * 1000 + 1000);
-                                db.insertCar(make, drive, model, price, year, vehicleClass, fuelType);
+                                if (Arrays.asList(car_make).contains(result.get("make").asText())) {
+                                    String make = result.get("make").asText();
+                                    String model = result.get("model").asText();
+                                    String drive = result.get("drive").asText();
+                                    String fuelType = result.get("fueltype").asText();
+                                    int randomInt = (int) (Math.random() * 40) + 1;
+                                    int year = Integer.parseInt(result.get("year").asText());
+                                    if (year > 2020) year -= randomInt;
+                                    String vehicleClass = result.get("vclass").asText();
+                                    int price = (int) (Math.random() * 90000 + 10000);
+                                    db.insertCar(make, drive, model, year, price, vehicleClass, fuelType);
+                                    if (db.getCarCount() == 15) break;
+                                }
                             }
                             Toast toast = Toast.makeText(ConnectActivity.this, "Loaded " + db.getCarCount() + " Cars", Toast.LENGTH_SHORT);
                             toast.show();

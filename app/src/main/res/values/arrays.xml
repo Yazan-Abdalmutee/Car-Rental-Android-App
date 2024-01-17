@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="price_slider_values">
+        <item>10000</item>
+        <item>100000</item>
+    </array>
+
+    <array name="year_slider_values">
+        <item>1980</item>
+        <item>2024</item>
+    </array>
+</resources>

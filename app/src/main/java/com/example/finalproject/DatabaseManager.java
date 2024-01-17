@@ -9,8 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class DatabaseManager {
 
-    private SQLiteDatabase database;
     private final DatabaseHelper dbHelper;
+    private SQLiteDatabase database;
 
     public DatabaseManager(Context context) {
         dbHelper = new DatabaseHelper(context);
@@ -26,7 +26,7 @@ public class DatabaseManager {
 
     // Insert a new customer into the CUSTOMER_TABLE
     public void insertCustomer(String email, String firstName, String lastName, String passwordHashed,
-                               String phoneNumber, String gender, String country, String city) {
+                               String phoneNumber,  String gender, String country, String city) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.CUSTOMER_EMAIL, email.toLowerCase());
         values.put(DatabaseHelper.CUSTOMER_FIRST_NAME, firstName);
@@ -119,13 +119,12 @@ public class DatabaseManager {
         try (Cursor cursor = database.query(
                 DatabaseHelper.CUSTOMER_TABLE,
                 null,
-                DatabaseHelper.CUSTOMER_EMAIL + " = ? AND " + DatabaseHelper.CUSTOMER_PASSWORD_HASHED + " = ?",
-                new String[]{email, password},
+                "LOWER(" + DatabaseHelper.CUSTOMER_EMAIL + ") = ? AND " + DatabaseHelper.CUSTOMER_PASSWORD_HASHED + " = ?",
+                new String[]{email.toLowerCase(), password},
                 null,
                 null,
                 null
         )) {
-
             // Check if the cursor has any rows, indicating a match
             return cursor != null && cursor.getCount() > 0;
         }
@@ -196,4 +195,56 @@ public class DatabaseManager {
 
 
     }
+
+    public void clearAllTables() {
+
+        String[] allTables = {"CAR", "CUSTOMER", "RESERVATION", "FAVORITE"};
+        for (String tableName : allTables) {
+            database.delete(tableName, null, null);
+        }
+    }
+
+    public Cursor getCarsByFilter(String[] makes, String[] fuels, int minYear, int maxYear, int minPrice, int maxPrice) {
+
+        StringBuilder whereClause = new StringBuilder();
+
+        if (makes != null && makes.length > 0) {
+            whereClause.append("(");
+            for (int i = 0; i < makes.length; i++) {
+                whereClause.append(DatabaseHelper.CAR_MAKE).append(" = '").append(makes[i]).append("'");
+                if (i < makes.length - 1) {
+                    whereClause.append(" OR ");
+                }
+            }
+            whereClause.append(")");
+        }
+
+        if (fuels != null && fuels.length > 0) {
+            if (makes != null && makes.length > 0)
+                whereClause.append(" AND ");
+
+            whereClause.append("(");
+            for (int i = 0; i < fuels.length; i++) {
+                whereClause.append(DatabaseHelper.CAR_FUEL).append(" = '").append(fuels[i]).append("'");
+                if (i < fuels.length - 1) {
+                    whereClause.append(" OR ");
+                }
+            }
+            whereClause.append(")");
+
+        }
+        if ((makes != null && makes.length > 0) || (fuels != null && fuels.length > 0))
+            whereClause.append(" AND ");
+
+        whereClause.append("(")
+                .append(DatabaseHelper.CAR_YEAR).append(" BETWEEN ").append(minYear).append(" AND ").append(maxYear)
+                .append(") AND (")
+                .append(DatabaseHelper.CAR_PRICE).append(" BETWEEN ").append(minPrice).append(" AND ").append(maxPrice)
+                .append(")");
+
+        Cursor cursor = database.query(DatabaseHelper.CAR_TABLE, null, whereClause.toString(), null, null, null, null);
+
+        return cursor;
+    }
+
 }
