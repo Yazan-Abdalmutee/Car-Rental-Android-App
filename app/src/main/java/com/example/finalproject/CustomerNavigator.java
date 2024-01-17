@@ -3,6 +3,7 @@ package com.example.finalproject;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -139,14 +140,14 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                 fragmentTransaction.commit();
             }
         } else if (id == R.id.carMenuItem) {
-
-            if (!(currentFragment instanceof CarMenuFragment)) {
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
-
-                fragmentTransaction.replace(R.id.layout_root, new CarMenuFragment(), "CarMenuFrag");
-                fragmentTransaction.commit();
-            }
+//
+//            if (!(currentFragment instanceof CarMenuFragment)) {
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
+//
+//                fragmentTransaction.replace(R.id.layout_root, new CarMenuFragment(), "CarMenuFrag");
+//                fragmentTransaction.commit();
+//            }
         } else if (id == R.id.contactMenuItem) {
             if (!(currentFragment instanceof ContactFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
