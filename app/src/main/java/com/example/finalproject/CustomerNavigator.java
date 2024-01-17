@@ -139,8 +139,11 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                 fragmentTransaction.replace(R.id.layout_root, new HomeFragment(), "HomeFrag");
                 fragmentTransaction.commit();
             }
-        } else if (id == R.id.carMenuItem) {
-//
+        } else if (id == R.id.carMenuItem && !inCarMenuPage) {
+
+            DatabaseManager db = MyApplication.getDatabaseManager();
+            Cursor cursor = db.getAllCars();
+            listOfFragments = getCars(cursor);
 //            if (!(currentFragment instanceof CarMenuFragment)) {
 //                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
@@ -149,6 +152,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
 //                fragmentTransaction.commit();
 //            }
         } else if (id == R.id.contactMenuItem) {
+            inCarMenuPage = false;
             if (!(currentFragment instanceof ContactFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
@@ -157,12 +161,14 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                 fragmentTransaction.commit();
             }
         } else if (id == R.id.signOutMenuItem) {
+            inCarMenuPage = false;
             sharedPreferencesManager.setSignedIn(false);
             sharedPreferencesManager.clearAllButRememberMe();
             Intent intent = new Intent(CustomerNavigator.this, SignInActivity.class);
             startActivity(intent);
             finish();
         } else if (id == R.id.profileMenuItem) {
+            inCarMenuPage = false;
             if (!(currentFragment instanceof ProfileFragment)) {
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
