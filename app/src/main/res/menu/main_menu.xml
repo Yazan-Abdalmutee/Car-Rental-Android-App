@@ -40,6 +40,37 @@
     </item>
 
 
+    <item
+        android:id="@+id/adminMenu"
+        android:title="@string/admin"
+        android:visible="false">
+        <menu>
+
+
+            <item
+                android:id="@+id/addAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:icon="@drawable/add_admin"
+                android:title="@string/add_admin" />
+            <item
+                android:id="@+id/deleteCustomer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:icon="@drawable/remove_customer"
+                android:title="@string/delete_customer" />
+            <item
+                android:id="@+id/viewAllReserve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:icon="@drawable/all_reservations"
+                android:title="@string/all_reservations" />
+
+        </menu>
+    </item>
     <item android:title="@string/main_menu_group_2">
         <menu>
             <item
@@ -56,7 +87,6 @@
                 android:checkable="true"
                 android:icon="@drawable/phone_selector"
                 android:title="@string/call_us_or_find_us" />
-
 
             <item
                 android:id="@+id/signOutMenuItem"

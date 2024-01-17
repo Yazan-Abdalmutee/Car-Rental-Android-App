@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,6 +87,8 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         root_layout = findViewById(R.id.layout_root);
         fragmentManager = getSupportFragmentManager();
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.homeItem));
+        Menu menu = navigationView.getMenu();
+        menu.findItem(R.id.adminMenu).setVisible(sharedPreferencesManager.getIsAdmin() == 1);
         TextView email = navigationView.getHeaderView(0).findViewById(R.id.emailHeader);
         email.setText(sharedPreferencesManager.getEmail());
         TextView name = navigationView.getHeaderView(0).findViewById(R.id.nameHeader);

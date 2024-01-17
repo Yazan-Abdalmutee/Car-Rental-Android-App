@@ -1,4 +1,4 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/baseline_group_add_24" android:state_checked="true"/>
-    <item android:drawable="@drawable/outline_group_add_24"/>
+    <item android:drawable="@drawable/baseline_person_24" android:state_checked="true"/>
+    <item android:drawable="@drawable/outline_person_24"/>
 </selector>
