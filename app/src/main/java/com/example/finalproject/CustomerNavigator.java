@@ -32,6 +32,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.slider.RangeSlider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CustomerNavigator extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,8 +44,8 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
     FragmentManager fragmentManager;
     Dialog filterDialog;
     ArrayList<CarItemFragment> listOfFragments;
-    boolean inCarMenuPage = false;
-    private ChipGroup chipGroupMake, chipGroupModel, chipGroupFuelType;
+    boolean[] pages =new boolean[3];
+    private ChipGroup chipGroupMake, chipGroupFuelType;
     private RangeSlider sliderYear, sliderPrice;
     SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
 
@@ -52,6 +53,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Arrays.fill(pages, false);
         setContentView(R.layout.activity_home_layout);
         if (!sharedPreferencesManager.getSignedIn()) {
             try {
@@ -131,28 +133,34 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         int id = item.getItemId();
         if (item.isCheckable()) toolbar.setTitle(item.getTitle());
         if (id == R.id.homeItem) {
-            inCarMenuPage = false;
+            Arrays.fill(pages, false);
             if (!(currentFragment instanceof HomeFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
-
                 fragmentTransaction.replace(R.id.layout_root, new HomeFragment(), "HomeFrag");
                 fragmentTransaction.commit();
             }
-        } else if (id == R.id.carMenuItem && !inCarMenuPage) {
+        } else if (id == R.id.carMenuItem && !pages[0]) {
 
             DatabaseManager db = MyApplication.getDatabaseManager();
-            Cursor cursor = db.getAllCars();
-            listOfFragments = getCars(cursor);
-//            if (!(currentFragment instanceof CarMenuFragment)) {
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
-//
-//                fragmentTransaction.replace(R.id.layout_root, new CarMenuFragment(), "CarMenuFrag");
-//                fragmentTransaction.commit();
-//            }
-        } else if (id == R.id.contactMenuItem) {
-            inCarMenuPage = false;
+            Cursor AllCarscursor = db.getCarsNotInReservations();
+            listOfFragments = getCars(AllCarscursor,"car");
+
+        }
+        else if (id == R.id.favorite_menu && !pages[1]) {
+            DatabaseManager db = MyApplication.getDatabaseManager();
+            Cursor AllCarscursor = db.getFavoriteCarsForUser(sharedPreferencesManager.getEmail());
+            listOfFragments = getCars(AllCarscursor,"favorite");
+        }
+
+        else if (id == R.id.reservations_menu && !pages[2]) {
+            DatabaseManager db = MyApplication.getDatabaseManager();
+            Cursor AllCarscursor = db.getReservationsCarsForUser(sharedPreferencesManager.getEmail());
+            listOfFragments = getCars(AllCarscursor,"reservation");
+        }
+
+        else if (id == R.id.contactMenuItem) {
+            Arrays.fill(pages, false);
             if (!(currentFragment instanceof ContactFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
@@ -161,14 +169,14 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                 fragmentTransaction.commit();
             }
         } else if (id == R.id.signOutMenuItem) {
-            inCarMenuPage = false;
+            Arrays.fill(pages, false);
             sharedPreferencesManager.setSignedIn(false);
             sharedPreferencesManager.clearAllButRememberMe();
             Intent intent = new Intent(CustomerNavigator.this, SignInActivity.class);
             startActivity(intent);
             finish();
         } else if (id == R.id.profileMenuItem) {
-            inCarMenuPage = false;
+            Arrays.fill(pages, false);
             if (!(currentFragment instanceof ProfileFragment)) {
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -239,7 +247,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         saveButton.setOnClickListener(v -> {
 
             Cursor cursor = getDataAfterFiltering();
-            listOfFragments = getCars(cursor);
+            listOfFragments = getCars(cursor,"car");
             filterDialog.dismiss();
         });
 
@@ -271,7 +279,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         String[] cars_make = getChipGroupData(chipGroupMake);
         String[] fuelTypes = getChipGroupData(chipGroupFuelType);
         DatabaseManager db = MyApplication.getDatabaseManager();
-        Cursor cursor = db.getCarsByFilter(cars_make, fuelTypes, (int) minSlider1, (int) maxSlider1, (int) minSlider2, (int) maxSlider2);
+        Cursor cursor = db.getCarsByFilterAndNotInReservations(cars_make, fuelTypes, (int) minSlider1, (int) maxSlider1, (int) minSlider2, (int) maxSlider2);
 
         return cursor;
     }
@@ -306,43 +314,50 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
     }
 
 
-    public ArrayList<CarItemFragment> getCars(Cursor cursor) {
+    public ArrayList<CarItemFragment> getCars(Cursor cursor,String  page) {
         ArrayList<CarItemFragment> fragmentList = new ArrayList<>();
-
-        inCarMenuPage = true;
+        Arrays.fill(pages, false);
+        if (page.equalsIgnoreCase("car"))
+            pages[0] = true;
+        else if (page.equalsIgnoreCase("favorite"))
+            pages[1] = true;
+        else if (page.equalsIgnoreCase("reservation"))
+            pages[2] = true;
 
         removeFragments();
 
-        int carCounts = cursor.getCount();
 
         String carMake;
         String carModel;
         int carYear;
+        int cardId;
         double carPrice;
         String carFuelType;
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (cursor!=null) {
+            for (int i = 0; i < cursor.getCount(); i++) {
+                if (cursor.moveToNext()) {
+                    cardId = cursor.getInt(0);
+                    carMake = cursor.getString(1);
+                    carModel = cursor.getString(2);
+                    carYear = Integer.parseInt(cursor.getString(3));
+                    carPrice = Double.parseDouble(cursor.getString(4));
+                    carFuelType = cursor.getString(7);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        for (int i = 0; i < carCounts; i++) {
-            if (cursor.moveToNext()) {
-                carMake = cursor.getString(1);
-                carModel = cursor.getString(2);
-                carYear = Integer.parseInt(cursor.getString(3));
-                carPrice = Double.parseDouble(cursor.getString(4));
-                carFuelType = cursor.getString(7);
+                    CarItemFragment carItemFragment = new CarItemFragment();
+                    Bundle args = new Bundle();
+                    args.putInt("carId", cardId);
+                    args.putString("carMake", carMake);
+                    args.putString("carModel", carModel);
+                    args.putString("carFuelType", carFuelType);
+                    args.putInt("carYear", carYear);
+                    args.putDouble("carPrice", carPrice);
+                    carItemFragment.setArguments(args);
 
-                CarItemFragment carItemFragment = new CarItemFragment();
-                Bundle args = new Bundle();
-                args.putString("carMake", carMake);
-                args.putString("carModel", carModel);
-                args.putString("carFuelType", carFuelType);
-                args.putInt("carYear", carYear);
-                args.putDouble("carPrice", carPrice);
-                carItemFragment.setArguments(args);
+                    fragmentTransaction.add(R.id.layout_root, carItemFragment);
+                    fragmentList.add(carItemFragment);
 
-                fragmentTransaction.add(R.id.layout_root, carItemFragment);
-                fragmentList.add(carItemFragment);
-
+                }
             }
         }
         fragmentTransaction.commitNow();

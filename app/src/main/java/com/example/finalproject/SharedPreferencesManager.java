@@ -10,6 +10,8 @@ public class SharedPreferencesManager {
     private static final String KEY_LAST_NAME = "last_name";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_REMEMBER_ME = "remember_me";
+    private static final String KEY_BUTTON_CLICKED_PREFIX = "button_clicked_";
+
 
     private static SharedPreferencesManager instance;
     private final SharedPreferences sharedPreferences;
@@ -46,18 +48,38 @@ public class SharedPreferencesManager {
         return sharedPreferences.getString(KEY_FIRST_NAME, "");
     }
 
+    public void setFirstName(String string) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_FIRST_NAME, string);
+        editor.apply();
+    }
+
     public String getLastName() {
         return sharedPreferences.getString(KEY_LAST_NAME, "");
+    }
+
+    public void setLastName(String string) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_LAST_NAME, string);
+        editor.apply();
     }
 
     public String getEmail() {
         return sharedPreferences.getString(KEY_EMAIL, "");
     }
+
+    public void setEmail(String string) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_EMAIL, string);
+        editor.apply();
+    }
+
     public void clear() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
     }
+
     public void clearAllButRememberMe() {
         String rememberMe = sharedPreferences.getString(KEY_REMEMBER_ME, "");
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -72,19 +94,13 @@ public class SharedPreferencesManager {
         editor.apply();
     }
 
-    public void setSignedIn(boolean b) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("signedIn", b);
-        editor.apply();
-    }
-
     public boolean getSignedIn() {
         return sharedPreferences.getBoolean("signedIn", false);
     }
 
-    public void setEmail(String string) {
+    public void setSignedIn(boolean b) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KEY_EMAIL, string);
+        editor.putBoolean("signedIn", b);
         editor.apply();
     }
 
@@ -101,22 +117,14 @@ public class SharedPreferencesManager {
         return sharedPreferences.getString(DatabaseHelper.CUSTOMER_PHONE_NUMBER, "");
     }
 
-    public void setFirstName(String string) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KEY_FIRST_NAME, string);
-        editor.apply();
-    }
-
-    public void setLastName(String string) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KEY_LAST_NAME, string);
-        editor.apply();
-    }
-
     public void setPhone(String string) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(DatabaseHelper.CUSTOMER_PHONE_NUMBER, string);
         editor.apply();
+    }
+
+    public String getPasswordHashed() {
+        return sharedPreferences.getString(DatabaseHelper.CUSTOMER_PASSWORD_HASHED, "");
     }
 
     public void setPasswordHashed(String passwordHashed) {
@@ -125,11 +133,19 @@ public class SharedPreferencesManager {
         editor.apply();
     }
 
-    public String getPasswordHashed() {
-        return sharedPreferences.getString(DatabaseHelper.CUSTOMER_PASSWORD_HASHED, "");
-    }
-
     public int getIsAdmin() {
         return sharedPreferences.getInt(DatabaseHelper.IS_ADMIN, 0);
     }
+
+//    public void saveButtonClicked(String fragmentTag, boolean isClicked) {
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putBoolean(KEY_BUTTON_CLICKED_PREFIX + fragmentTag, isClicked);
+//        editor.apply();
+//    }
+//
+//    public boolean isButtonClicked(String fragmentTag) {
+//        return sharedPreferences.getBoolean(KEY_BUTTON_CLICKED_PREFIX + fragmentTag, false);
+//    }
+
+
 }

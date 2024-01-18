@@ -45,9 +45,9 @@
         <com.google.android.material.chip.Chip
             android:id="@+id/chip5"
             style="@style/Widget.Material3.Chip.Filter"
-            android:gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:text="BMW" />
 
         <com.google.android.material.chip.Chip

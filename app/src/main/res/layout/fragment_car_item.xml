@@ -2,12 +2,13 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/car_card"
-    android:layout_width="match_parent"
+    android:id="@+id/car_card_dialog"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
     android:layout_margin="18dp"
     android:orientation="vertical"
-    app:cardCornerRadius="20dp"
+    app:cardCornerRadius="25dp"
     app:cardElevation="0dp"
     app:cardMaxElevation="0dp">
 
@@ -18,15 +19,14 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
             android:scaleType="fitXY"
             android:src="@drawable/modern_car" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="8dp">
 
@@ -38,7 +38,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/car_model"
+                    android:id="@+id/car_model_dialog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
@@ -47,7 +47,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/car_make"
+                    android:id="@+id/car_make_dialog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
@@ -62,13 +62,12 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="25dp">
 
-                <com.airbnb.lottie.LottieAnimationView
+                <ImageView
                     android:id="@+id/filter_button"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="32dp"
+                    android:layout_height="22dp"
                     android:contentDescription="favorite"
-                    android:scaleType="centerCrop"
-                    app:lottie_rawRes="@raw/favorite" />
+                    android:src="@drawable/heart" />
 
 
                 <ImageView
@@ -85,14 +84,14 @@
             android:id="@+id/expanded_layot"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="12dp"
             android:orientation="vertical"
+            android:paddingLeft="10dp"
             android:visibility="gone"
             tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
@@ -104,7 +103,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/car_price"
+                    android:id="@+id/car_price_dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -116,8 +115,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -128,7 +126,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/car_year"
+                    android:id="@+id/car_year_dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -140,8 +138,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -152,7 +149,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/car_fuelType"
+                    android:id="@+id/car_fuelType_dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -164,8 +161,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -176,7 +172,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/car_Class"
+                    android:id="@+id/car_Class_dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -187,8 +183,35 @@
             </LinearLayout>
 
 
+            <LinearLayout
+                android:id="@+id/expand_reserve_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reservation Date:"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/reservation_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:gravity="center"
+                    android:text="2024/11/1"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
             <Button
-                android:id="@+id/reserve_buton"
+                android:id="@+id/reserve_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

@@ -26,7 +26,7 @@ public class DatabaseManager {
 
     // Insert a new customer into the CUSTOMER_TABLE
     public void insertCustomer(String email, String firstName, String lastName, String passwordHashed,
-                               String phoneNumber,  String gender, String country, String city) {
+                               String phoneNumber, String gender, String country, String city) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.CUSTOMER_EMAIL, email.toLowerCase());
         values.put(DatabaseHelper.CUSTOMER_FIRST_NAME, firstName);
@@ -63,6 +63,7 @@ public class DatabaseManager {
         values.put(DatabaseHelper.RESERVATION_EMAIL, email.toLowerCase());
         values.put(DatabaseHelper.RESERVATION_DATE, reservationDate);
 
+
         return database.insert(DatabaseHelper.RESERVATION_TABLE, null, values);
     }
 
@@ -75,6 +76,80 @@ public class DatabaseManager {
         return database.insert(DatabaseHelper.FAVORITE_TABLE, null, values);
     }
 
+
+    private String generateFavoriteKey(int carId, String email) {
+        // Concatenate carId and email to create a unique key for each user's favorite
+        return carId + "_" + email.toLowerCase();
+    }
+
+
+    public int removeFavorite(int carId, String email) {
+        String whereClause = DatabaseHelper.FAVORITE_CAR_ID + " = ? AND " + DatabaseHelper.FAVORITE_EMAIL + " = ?";
+        String[] whereArgs = {String.valueOf(carId), email.toLowerCase()};
+
+        return database.delete(DatabaseHelper.FAVORITE_TABLE, whereClause, whereArgs);
+    }
+
+    public boolean isCarInFavorites(int carId, String email) {
+        String[] columns = {DatabaseHelper.FAVORITE_ID};
+        String selection = DatabaseHelper.FAVORITE_CAR_ID + " = ? AND " + DatabaseHelper.FAVORITE_EMAIL + " = ?";
+        String[] selectionArgs = {String.valueOf(carId), email.toLowerCase()};
+
+        try (Cursor cursor = database.query(DatabaseHelper.FAVORITE_TABLE, columns, selection, selectionArgs, null, null, null)) {
+            return cursor != null && cursor.moveToFirst();
+        }
+    }
+
+    public boolean isCarInReservations(int carId) {
+        String[] columns = {DatabaseHelper.RESERVATION_ID};
+        String selection = DatabaseHelper.RESERVATION_CAR_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(carId)};
+
+        try (Cursor cursor = database.query(DatabaseHelper.RESERVATION_TABLE, columns, selection, selectionArgs, null, null, null)) {
+            return cursor != null && cursor.moveToFirst();
+        }
+    }
+
+    public Cursor getReservationsCarsForUser(String userEmail) {
+        userEmail = userEmail.toLowerCase();
+        String query = "SELECT * FROM " + DatabaseHelper.CAR_TABLE +
+                " INNER JOIN " + DatabaseHelper.RESERVATION_TABLE +
+                " ON " + DatabaseHelper.CAR_TABLE + "." + DatabaseHelper.CAR_ID +
+                " = " + DatabaseHelper.RESERVATION_TABLE + "." + DatabaseHelper.RESERVATION_CAR_ID +
+                " WHERE " + DatabaseHelper.RESERVATION_TABLE + "." + DatabaseHelper.RESERVATION_EMAIL +
+                " = '" + userEmail + "'";
+        return database.rawQuery(query, null);
+    }
+
+    public Cursor getCarsNotInReservations() {
+        String query = "SELECT * FROM " + DatabaseHelper.CAR_TABLE +
+                " WHERE NOT EXISTS (" +
+                "   SELECT 1 FROM " + DatabaseHelper.RESERVATION_TABLE +
+                "   WHERE " + DatabaseHelper.RESERVATION_TABLE + "." + DatabaseHelper.RESERVATION_CAR_ID +
+                "   = " + DatabaseHelper.CAR_TABLE + "." + DatabaseHelper.CAR_ID +
+                ")";
+        return database.rawQuery(query, null);
+    }
+
+    public String getReservationDateForCar(int carId) {
+        String reservationDate = null;
+        String query = "SELECT " + DatabaseHelper.RESERVATION_DATE +
+                " FROM " + DatabaseHelper.RESERVATION_TABLE +
+                " WHERE " + DatabaseHelper.RESERVATION_CAR_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(carId)};
+        Cursor cursor = database.rawQuery(query, selectionArgs);
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(DatabaseHelper.RESERVATION_DATE);
+            if (columnIndex != -1) {
+                reservationDate = cursor.getString(columnIndex);
+            }
+            cursor.close();
+        }
+
+        return reservationDate;
+    }
+
+
     // Example query: Get all customers
     public Cursor getAllCustomers() {
         return database.query(DatabaseHelper.CUSTOMER_TABLE, null, null, null, null, null, null);
@@ -83,6 +158,17 @@ public class DatabaseManager {
     // Example query: Get all cars
     public Cursor getAllCars() {
         return database.query(DatabaseHelper.CAR_TABLE, null, null, null, null, null, null);
+    }
+
+    public Cursor getFavoriteCarsForUser(String userEmail) {
+        userEmail = userEmail.toLowerCase();
+        String query = "SELECT * FROM " + DatabaseHelper.CAR_TABLE +
+                " INNER JOIN " + DatabaseHelper.FAVORITE_TABLE +
+                " ON " + DatabaseHelper.CAR_TABLE + "." + DatabaseHelper.CAR_ID +
+                " = " + DatabaseHelper.FAVORITE_TABLE + "." + DatabaseHelper.FAVORITE_CAR_ID +
+                " WHERE " + DatabaseHelper.FAVORITE_TABLE + "." + DatabaseHelper.FAVORITE_EMAIL +
+                " = '" + userEmail + "'";
+        return database.rawQuery(query, null);
     }
 
     public Cursor getCustomerReservations(String email) {
@@ -170,8 +256,6 @@ public class DatabaseManager {
     }
 
 
-
-
     public void editCustomer(String email, String firstName, String lastName, String phone, String password) {
         // Assuming 'database' is your SQLiteDatabase instance
 
@@ -204,7 +288,49 @@ public class DatabaseManager {
         }
     }
 
-    public Cursor getCarsByFilter(String[] makes, String[] fuels, int minYear, int maxYear, int minPrice, int maxPrice) {
+    //    public Cursor getCarsByFilter(String[] makes, String[] fuels, int minYear, int maxYear, int minPrice, int maxPrice) {
+//
+//        StringBuilder whereClause = new StringBuilder();
+//
+//        if (makes != null && makes.length > 0) {
+//            whereClause.append("(");
+//            for (int i = 0; i < makes.length; i++) {
+//                whereClause.append(DatabaseHelper.CAR_MAKE).append(" = '").append(makes[i]).append("'");
+//                if (i < makes.length - 1) {
+//                    whereClause.append(" OR ");
+//                }
+//            }
+//            whereClause.append(")");
+//        }
+//
+//        if (fuels != null && fuels.length > 0) {
+//            if (makes != null && makes.length > 0)
+//                whereClause.append(" AND ");
+//
+//            whereClause.append("(");
+//            for (int i = 0; i < fuels.length; i++) {
+//                whereClause.append(DatabaseHelper.CAR_FUEL).append(" = '").append(fuels[i]).append("'");
+//                if (i < fuels.length - 1) {
+//                    whereClause.append(" OR ");
+//                }
+//            }
+//            whereClause.append(")");
+//
+//        }
+//        if ((makes != null && makes.length > 0) || (fuels != null && fuels.length > 0))
+//            whereClause.append(" AND ");
+//
+//        whereClause.append("(")
+//                .append(DatabaseHelper.CAR_YEAR).append(" BETWEEN ").append(minYear).append(" AND ").append(maxYear)
+//                .append(") AND (")
+//                .append(DatabaseHelper.CAR_PRICE).append(" BETWEEN ").append(minPrice).append(" AND ").append(maxPrice)
+//                .append(")");
+//
+//        Cursor cursor = database.query(DatabaseHelper.CAR_TABLE, null, whereClause.toString(), null, null, null, null);
+//
+//        return cursor;
+//    }
+    public Cursor getCarsByFilterAndNotInReservations(String[] makes, String[] fuels, int minYear, int maxYear, int minPrice, int maxPrice) {
 
         StringBuilder whereClause = new StringBuilder();
 
@@ -242,9 +368,16 @@ public class DatabaseManager {
                 .append(DatabaseHelper.CAR_PRICE).append(" BETWEEN ").append(minPrice).append(" AND ").append(maxPrice)
                 .append(")");
 
+        whereClause.append(" AND NOT EXISTS (")
+                .append(" SELECT 1 FROM ").append(DatabaseHelper.RESERVATION_TABLE)
+                .append(" WHERE ").append(DatabaseHelper.RESERVATION_TABLE).append(".").append(DatabaseHelper.RESERVATION_CAR_ID)
+                .append(" = ").append(DatabaseHelper.CAR_TABLE).append(".").append(DatabaseHelper.CAR_ID)
+                .append(")");
+
         Cursor cursor = database.query(DatabaseHelper.CAR_TABLE, null, whereClause.toString(), null, null, null, null);
 
         return cursor;
     }
+
 
 }
