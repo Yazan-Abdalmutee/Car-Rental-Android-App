@@ -2,12 +2,18 @@ package com.example.finalproject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionManager;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +23,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class ProfileFragment extends Fragment {
+
+    private static final int PICK_IMAGE_REQUEST = 1;
+    CircleImageView profile_image,swap_profile_image;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -39,6 +56,8 @@ public class ProfileFragment extends Fragment {
         Button edit = view.findViewById(R.id.edit_profile);
         TextView name = view.findViewById(R.id.name_textField);
         TextView email = view.findViewById(R.id.email_textField);
+        profile_image=view.findViewById(R.id.profile_image_header);
+        swap_profile_image=view.findViewById(R.id.profile_image_swap);
 
         SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(getContext());
         name.setText(sharedPreferencesManager.getFirstName() + " " + sharedPreferencesManager.getLastName());
@@ -143,7 +162,12 @@ public class ProfileFragment extends Fragment {
             if (confirmPassword.getText().toString().isEmpty())
                 confirmPassword.setText(sharedPreferencesManager.getPasswordHashed());
 
+
             DatabaseManager databaseManager = MyApplication.getDatabaseManager();
+
+
+
+
             passwordLayout.setErrorIconDrawable(null);
             confirmPasswordLayout.setErrorIconDrawable(null);
             String passwordHashed = PasswordHasher.hashPassword(password.getText().toString());
@@ -257,6 +281,71 @@ public class ProfileFragment extends Fragment {
                 //
             }
         });
+
+
+
+        swap_profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImagePicker();
+            }
+        });
+
         return view;
+
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateProfileImage(profile_image);
+
+    }
+    private void updateProfileImage(CircleImageView profile_image) {
+        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(getContext());
+            String imageString= sharedPreferencesManager.getImage();
+        if (imageString != null && !imageString.isEmpty()) {
+            byte[] imageByteArray = Base64.decode(imageString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+            Glide.with(this)
+                    .load(bitmap)
+                    .into(profile_image);
+        }
+    }
+    private void openImagePicker() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+    public static byte[] convertBitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            Uri selectedImageUri = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), selectedImageUri);
+                byte[] imageByteArray = convertBitmapToByteArray(bitmap);
+                DatabaseManager db = MyApplication.getDatabaseManager();
+                SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(getContext());
+                db.updateCustomerImage(sharedPreferencesManager.getEmail(),imageByteArray);
+                sharedPreferencesManager.setUserImage(imageByteArray);
+                Activity parentActivity = getActivity();
+                assert parentActivity != null;
+                NavigationView navigationView = parentActivity.findViewById(R.id.navigation);
+                CircleImageView profile_header = navigationView.getHeaderView(0).findViewById(R.id.profile_image_header);
+                updateProfileImage(profile_header);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

@@ -50,7 +50,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             CUSTOMER_COUNTRY + " TEXT NOT NULL, " +
             CUSTOMER_CITY + " TEXT NOT NULL, " +
             CUSTOMER_GENDER + " TEXT NOT NULL, " +
-            IS_ADMIN + " INTEGER NOT NULL);";
+            IS_ADMIN + " INTEGER NOT NULL, "+
+            CUSTOMER_IMAGE + " BLOB );";
     public static final String CREATE_CAR_TABLE = "CREATE TABLE if not exists " + CAR_TABLE + "(" +
             CAR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             CAR_MAKE + " TEXT NOT NULL, " +
@@ -76,7 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Information
     static final String DB_NAME = "CAPITALCARS.DB";
     // database version
-    static final int DB_VERSION = 113;
+    static final int DB_VERSION = 121;
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -92,7 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String hashedPassword = PasswordHasher.hashPassword("admin");
         String sql = "INSERT INTO " + DatabaseHelper.CUSTOMER_TABLE +
                 " VALUES ('admin@capital.cars', 'Mohammad', 'Abu-Shelbaia', " +
-                "'" + hashedPassword + "', '0599999999', 'PS', 'Jerusalem', 'Male', 1)";
+                "'" + hashedPassword + "', '0599999999', 'PS', 'Jerusalem', 'Male', 1,null)";
         db.execSQL(sql);
     }
 

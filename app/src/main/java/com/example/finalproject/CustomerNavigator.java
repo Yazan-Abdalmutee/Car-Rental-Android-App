@@ -5,11 +5,12 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.navigation.NavigationView;
@@ -35,11 +37,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class CustomerNavigator extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    CircleImageView profile_image;
+
     LinearLayout root_layout;
     FragmentManager fragmentManager;
     Dialog filterDialog;
@@ -69,12 +75,14 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                     @SuppressLint("Range") String country = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUSTOMER_COUNTRY));
                     @SuppressLint("Range") String city = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUSTOMER_CITY));
                     @SuppressLint("Range") String gender = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUSTOMER_GENDER));
+                    @SuppressLint("Range") byte []image = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.CUSTOMER_IMAGE));
 
                     // Ensure that integer columns have valid values
                     @SuppressLint("Range") int isAdmin = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.IS_ADMIN));
                     // Save the retrieved information into SharedPreferences
                     sharedPreferencesManager.saveUserInfo(customerEmail, firstName, lastName, passwordHashed,
                             phoneNumber, country, city, gender, isAdmin);
+                    sharedPreferencesManager.saveUserImage(image);
                 } else {
                     // Handle the case where no matching record is found
                     Toast.makeText(this, "No customer found for the signed-in email", Toast.LENGTH_SHORT).show();
@@ -102,12 +110,16 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.homeItem);
+        CircleImageView profile_image=navigationView.getHeaderView(0).findViewById(R.id.profile_image_header);
+        updateProfileImage(profile_image,sharedPreferencesManager.getImage());
         root_layout = findViewById(R.id.layout_root);
         fragmentManager = getSupportFragmentManager();
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.homeItem));
         Menu menu = navigationView.getMenu();
         menu.findItem(R.id.adminMenu).setVisible(sharedPreferencesManager.getIsAdmin() == 1);
+
         TextView email = navigationView.getHeaderView(0).findViewById(R.id.emailHeader);
+
         email.setText(sharedPreferencesManager.getEmail());
         TextView name = navigationView.getHeaderView(0).findViewById(R.id.nameHeader);
         String n = sharedPreferencesManager.getFirstName() + " " + sharedPreferencesManager.getLastName();
@@ -126,11 +138,11 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) { //navigation drawer
 
-
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.layout_root);
-
-
         int id = item.getItemId();
+
+        setItemsVisibility(id);
+
         if (item.isCheckable()) toolbar.setTitle(item.getTitle());
         if (id == R.id.homeItem) {
             Arrays.fill(pages, false);
@@ -164,7 +176,6 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
             if (!(currentFragment instanceof ContactFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
-
                 fragmentTransaction.replace(R.id.layout_root, new ContactFragment(), "ContactFrag");
                 fragmentTransaction.commit();
             }
@@ -178,7 +189,6 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.profileMenuItem) {
             Arrays.fill(pages, false);
             if (!(currentFragment instanceof ProfileFragment)) {
-
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
                 fragmentTransaction.replace(R.id.layout_root, new ProfileFragment(), "ProfileFrag");
@@ -199,7 +209,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         MenuItem searchItem = menu.findItem(R.id.app_bar_search);
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
         assert searchView != null;
-        searchView.setQueryHint("Type here car model");
+        searchView.setQueryHint("Type here car name");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -286,15 +296,18 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
 
 
     public void filterCardsBySearch(String search, ArrayList<CarItemFragment> fragments) {
+        DatabaseManager db = MyApplication.getDatabaseManager();
 
         for (Fragment fragment : fragments) {
 
             CarItemFragment currentFragment = (CarItemFragment) fragment;
             String make = currentFragment.getCarModel();
-            if (make.toLowerCase().contains(search.toLowerCase())) {
-                currentFragment.setVisibility(true);
-            } else {
-                currentFragment.setVisibility(false);
+            if(!db.isCarInReservations(currentFragment.getCarId()) ) {
+                if (make.toLowerCase().contains(search.toLowerCase())) {
+                    currentFragment.setVisibility(true);
+                } else {
+                    currentFragment.setVisibility(false);
+                }
             }
 
 
@@ -333,6 +346,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         int cardId;
         double carPrice;
         String carFuelType;
+        String carClass;
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (cursor!=null) {
             for (int i = 0; i < cursor.getCount(); i++) {
@@ -343,6 +357,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                     carYear = Integer.parseInt(cursor.getString(3));
                     carPrice = Double.parseDouble(cursor.getString(4));
                     carFuelType = cursor.getString(7);
+                    carClass=cursor.getString(6);
 
                     CarItemFragment carItemFragment = new CarItemFragment();
                     Bundle args = new Bundle();
@@ -352,6 +367,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                     args.putString("carFuelType", carFuelType);
                     args.putInt("carYear", carYear);
                     args.putDouble("carPrice", carPrice);
+                    args.putString("class",carClass);
                     carItemFragment.setArguments(args);
 
                     fragmentTransaction.add(R.id.layout_root, carItemFragment);
@@ -366,6 +382,22 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
 
     }
 
+
+    public void setItemsVisibility(int id) {
+        Menu menu = toolbar.getMenu();
+        MenuItem searchItem = menu.findItem(R.id.app_bar_search);
+        MenuItem filterItem = menu.findItem(R.id.filter_button);
+        if(id == R.id.carMenuItem)
+        {
+            searchItem.setVisible(true);
+            filterItem.setVisible(true);
+        }
+        else {
+            searchItem.setVisible(false);
+            filterItem.setVisible(false);
+        }
+    }
+
     public void removeFragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         while (fragmentManager.findFragmentById(R.id.layout_root) != null) {
@@ -375,6 +407,35 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
             fragmentManager.executePendingTransactions();
         }
     }
+//    private void updateProfileImage(CircleImageView profile_image) {
+//        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
+//        DatabaseManager databaseManager = MyApplication.getDatabaseManager();
+//        byte[] imageByteArray = databaseManager.getCustomerImage(sharedPreferencesManager.getEmail());
+//        if (imageByteArray != null && imageByteArray.length > 0) {
+//            Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+//            Glide.with(this)
+//                    .load(bitmap)
+//                    .into(profile_image);
+//        }
+//    }
+
+    private void updateProfileImage(CircleImageView profile_image, String imageString) {
+        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
+        // Uncomment the line below to declare imageByteArray
+        // byte[] imageByteArray = Base64.decode(imageString, Base64.DEFAULT);
+
+        if (imageString != null && !imageString.isEmpty()) {
+            byte[] imageByteArray = Base64.decode(imageString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+            Glide.with(this)
+                    .load(bitmap)
+                    .into(profile_image);
+        }
+    }
+
+
+
+
 
 }
 

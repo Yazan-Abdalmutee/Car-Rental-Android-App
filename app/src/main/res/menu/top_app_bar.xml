@@ -8,12 +8,13 @@
         android:layout_height="wrap_content"
         android:icon="@drawable/baseline_search_24"
         android:title="Search"
+        android:visible="false"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/filter_button"
         android:icon="@drawable/edit"
         android:title="@string/search"
-        android:visible="true"
-        app:showAsAction="ifRoom" />
+        android:visible="false"
+        app:showAsAction="always" />
 </menu>

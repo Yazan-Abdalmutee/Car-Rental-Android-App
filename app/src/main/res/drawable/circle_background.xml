@@ -1,0 +1,10 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background color (e.g., camera-related color) -->
+    <item android:id="@android:id/background">
+        <shape android:shape="oval">
+            <solid android:color="#039BE5" /> <!-- Goldenrod color, you can change to another color -->
+        </shape>
+    </item>
+
+</layer-list>

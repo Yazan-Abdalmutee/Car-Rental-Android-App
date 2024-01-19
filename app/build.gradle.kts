@@ -44,5 +44,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("com.airbnb.android:lottie:3.7.0")
     implementation ("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+
 
 }

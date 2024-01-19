@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment {
 
         TextView text =view.findViewById(R.id.textView_homePage);
         text.setText("\n" +
-                "The fictional history of our car dealership dates back to 1985 when a group of passionate automotive enthusiasts came together to establish a haven for car enthusiasts. Over the years, our dealership has grown into a trusted destination, providing top-notch service and a diverse range of quality vehicles. Committed to customer satisfaction, we take pride in our rich history of delivering exceptional automobiles and creating lasting relationships with our valued customers.\n" );
+                "Capital Cars Rental, established in 2008, has been a trusted name in the car rental industry. With a diverse fleet of vehicles and a commitment to customer satisfaction, they provide convenient and reliable transportation solutions for various travel needs.");
 
         return view;
     }

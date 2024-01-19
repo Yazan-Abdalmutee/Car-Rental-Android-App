@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/car_card_dialog"
+    android:id="@+id/car_card_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
@@ -38,7 +38,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/car_model_dialog"
+                    android:id="@+id/car_model_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
@@ -47,7 +47,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/car_make_dialog"
+                    android:id="@+id/car_make_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
@@ -103,7 +103,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/car_price_dialog"
+                    android:id="@+id/car_price_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -126,7 +126,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/car_year_dialog"
+                    android:id="@+id/car_year_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -149,7 +149,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/car_fuelType_dialog"
+                    android:id="@+id/car_fuelType_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -172,7 +172,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/car_Class_dialog"
+                    android:id="@+id/car_Class_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"

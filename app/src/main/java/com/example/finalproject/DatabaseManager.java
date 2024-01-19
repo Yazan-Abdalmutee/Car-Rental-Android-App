@@ -37,8 +37,20 @@ public class DatabaseManager {
         values.put(DatabaseHelper.CUSTOMER_CITY, city);
         values.put(DatabaseHelper.CUSTOMER_GENDER, gender);
         values.put(DatabaseHelper.IS_ADMIN, 0);
-
         database.insert(DatabaseHelper.CUSTOMER_TABLE, null, values);
+    }
+
+
+
+
+
+
+    public void updateCustomerImage(String email, byte[] image) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.CUSTOMER_IMAGE, image);
+        String whereClause = DatabaseHelper.CUSTOMER_EMAIL + "=?";
+        String[] whereArgs = {email.toLowerCase()};
+        database.update(DatabaseHelper.CUSTOMER_TABLE, values, whereClause, whereArgs);
     }
 
     // Insert a new car into the CAR_TABLE
@@ -176,6 +188,36 @@ public class DatabaseManager {
         return database.query(DatabaseHelper.RESERVATION_TABLE, null, DatabaseHelper.RESERVATION_EMAIL + " = ?", new String[]{email}, null, null, null);
     }
 
+    public byte[] getCustomerImage(String email) {
+        email = email.toLowerCase();
+        Cursor cursor = database.query(
+                DatabaseHelper.CUSTOMER_TABLE,
+                new String[]{DatabaseHelper.CUSTOMER_IMAGE},
+                DatabaseHelper.CUSTOMER_EMAIL + " = ?",
+                new String[]{email},
+                null,
+                null,
+                null
+        );
+
+        byte[] imageByteArray = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int imageColumnIndex = cursor.getColumnIndex(DatabaseHelper.CUSTOMER_IMAGE);
+            imageByteArray = cursor.getBlob(imageColumnIndex);
+            cursor.close();
+        }
+
+        return imageByteArray;
+    }
+
+
+
+
+
+
+
+
     public Cursor getCustomerFavorites(String email) {
         email = email.toLowerCase();
         return database.query(DatabaseHelper.FAVORITE_TABLE, null, DatabaseHelper.FAVORITE_EMAIL + " = ?", new String[]{email}, null, null, null);
@@ -288,48 +330,6 @@ public class DatabaseManager {
         }
     }
 
-    //    public Cursor getCarsByFilter(String[] makes, String[] fuels, int minYear, int maxYear, int minPrice, int maxPrice) {
-//
-//        StringBuilder whereClause = new StringBuilder();
-//
-//        if (makes != null && makes.length > 0) {
-//            whereClause.append("(");
-//            for (int i = 0; i < makes.length; i++) {
-//                whereClause.append(DatabaseHelper.CAR_MAKE).append(" = '").append(makes[i]).append("'");
-//                if (i < makes.length - 1) {
-//                    whereClause.append(" OR ");
-//                }
-//            }
-//            whereClause.append(")");
-//        }
-//
-//        if (fuels != null && fuels.length > 0) {
-//            if (makes != null && makes.length > 0)
-//                whereClause.append(" AND ");
-//
-//            whereClause.append("(");
-//            for (int i = 0; i < fuels.length; i++) {
-//                whereClause.append(DatabaseHelper.CAR_FUEL).append(" = '").append(fuels[i]).append("'");
-//                if (i < fuels.length - 1) {
-//                    whereClause.append(" OR ");
-//                }
-//            }
-//            whereClause.append(")");
-//
-//        }
-//        if ((makes != null && makes.length > 0) || (fuels != null && fuels.length > 0))
-//            whereClause.append(" AND ");
-//
-//        whereClause.append("(")
-//                .append(DatabaseHelper.CAR_YEAR).append(" BETWEEN ").append(minYear).append(" AND ").append(maxYear)
-//                .append(") AND (")
-//                .append(DatabaseHelper.CAR_PRICE).append(" BETWEEN ").append(minPrice).append(" AND ").append(maxPrice)
-//                .append(")");
-//
-//        Cursor cursor = database.query(DatabaseHelper.CAR_TABLE, null, whereClause.toString(), null, null, null, null);
-//
-//        return cursor;
-//    }
     public Cursor getCarsByFilterAndNotInReservations(String[] makes, String[] fuels, int minYear, int maxYear, int minPrice, int maxPrice) {
 
         StringBuilder whereClause = new StringBuilder();

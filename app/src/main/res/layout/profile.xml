@@ -7,17 +7,33 @@
     tools:context=".ProfileFragment">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
+        android:id="@+id/profile_image_header"
         android:layout_width="212dp"
         android:layout_height="156dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/dark_aesthetic_anime_pfp_7"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image_swap"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/circle_background"
+        android:src="@drawable/rounded_add_24"
+        android:tint="#FBFAFA"
+        app:civ_border_color="#00000000"
+        app:civ_border_width="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/profile_image_header"
+        app:layout_constraintEnd_toEndOf="@id/profile_image_header"
+        app:layout_constraintHorizontal_bias="0.819"
+        app:layout_constraintStart_toStartOf="@id/profile_image_header"
+        app:layout_constraintTop_toTopOf="@id/profile_image_header"
+        app:layout_constraintVertical_bias="0.909" />
 
     <TextView
         android:id="@+id/name_textField"
@@ -31,7 +47,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image_header"
         tools:ignore="HardcodedText" />
 
     <TextView
@@ -59,7 +75,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image">
+        app:layout_constraintTop_toBottomOf="@+id/profile_image_header">
 
         <LinearLayout
             android:layout_width="match_parent"

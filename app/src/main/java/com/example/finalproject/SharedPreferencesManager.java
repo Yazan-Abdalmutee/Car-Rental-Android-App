@@ -2,6 +2,7 @@ package com.example.finalproject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 
 public class SharedPreferencesManager {
 
@@ -9,6 +10,7 @@ public class SharedPreferencesManager {
     private static final String KEY_FIRST_NAME = "first_name";
     private static final String KEY_LAST_NAME = "last_name";
     private static final String KEY_EMAIL = "email";
+    private static final String KEY_IMAGE = "image";
     private static final String KEY_REMEMBER_ME = "remember_me";
     private static final String KEY_BUTTON_CLICKED_PREFIX = "button_clicked_";
 
@@ -41,12 +43,31 @@ public class SharedPreferencesManager {
         editor.putInt(DatabaseHelper.IS_ADMIN, isAdmin);
         editor.putString(DatabaseHelper.CUSTOMER_CITY, city);
         editor.putString(DatabaseHelper.CUSTOMER_GENDER, gender);
+
+
+        editor.apply();
+    }
+    public void setUserImage(byte[] image) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String encodedImage = Base64.encodeToString(image, Base64.DEFAULT);
+        editor.putString(KEY_IMAGE, encodedImage);
+        editor.apply();
+    }
+    public void saveUserImage(byte[] image) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String encodedImage = Base64.encodeToString(image, Base64.DEFAULT);
+        editor.putString(DatabaseHelper.CUSTOMER_IMAGE, encodedImage);
         editor.apply();
     }
 
     public String getFirstName() {
         return sharedPreferences.getString(KEY_FIRST_NAME, "");
     }
+    public String getImage() {
+        return sharedPreferences.getString(KEY_IMAGE, "");
+    }
+
+
 
     public void setFirstName(String string) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -122,6 +143,12 @@ public class SharedPreferencesManager {
         editor.putString(DatabaseHelper.CUSTOMER_PHONE_NUMBER, string);
         editor.apply();
     }
+    public void setImage(byte [] image) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String encodedImage = Base64.encodeToString(image, Base64.DEFAULT);
+        editor.putString(DatabaseHelper.CUSTOMER_IMAGE, encodedImage);
+        editor.apply();
+    }
 
     public String getPasswordHashed() {
         return sharedPreferences.getString(DatabaseHelper.CUSTOMER_PASSWORD_HASHED, "");
@@ -137,15 +164,6 @@ public class SharedPreferencesManager {
         return sharedPreferences.getInt(DatabaseHelper.IS_ADMIN, 0);
     }
 
-//    public void saveButtonClicked(String fragmentTag, boolean isClicked) {
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putBoolean(KEY_BUTTON_CLICKED_PREFIX + fragmentTag, isClicked);
-//        editor.apply();
-//    }
-//
-//    public boolean isButtonClicked(String fragmentTag) {
-//        return sharedPreferences.getBoolean(KEY_BUTTON_CLICKED_PREFIX + fragmentTag, false);
-//    }
 
 
 }
