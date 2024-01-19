@@ -112,6 +112,7 @@
     <string name="add_admin">Add Admin</string>
     <string name="all_reservations">All Reservations</string>
     <string name="admin">Admin</string>
+    <string name="fill_new_admin_info_below">Fill new admin info below</string>
 
 
 </resources>

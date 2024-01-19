@@ -1,8 +1,12 @@
 package com.example.finalproject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
+
+import java.util.Random;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -77,7 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database Information
     static final String DB_NAME = "CAPITALCARS.DB";
     // database version
-    static final int DB_VERSION = 121;
+    static final int DB_VERSION = 125;
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -85,6 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(CREATE_CUSTOMER_TABLE);
         db.execSQL(CREATE_CAR_TABLE);
         db.execSQL(CREATE_RESERVATION_TABLE);
@@ -94,7 +99,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String sql = "INSERT INTO " + DatabaseHelper.CUSTOMER_TABLE +
                 " VALUES ('admin@capital.cars', 'Mohammad', 'Abu-Shelbaia', " +
                 "'" + hashedPassword + "', '0599999999', 'PS', 'Jerusalem', 'Male', 1,null)";
+
+        addMockData(db);
+        // add some users for testing
         db.execSQL(sql);
+    }
+
+    private void addMockData(SQLiteDatabase db) {
+// Mock first names, last names, and emails
+        String[] firstNames = {"Alex", "Bob", "Ahmad", "David", "Emily", "Fiona", "George", "Helen", "Ibrahim", "Jessica"};
+        String[] lastNames = {"Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor"};
+        String[] emails = {"alex@example.com", "bob@example.com", "ahmad@example.com", "david@example.com", "emily@example.com", "fiona@example.com", "george@example.com", "helen@example.com", "ibrahim@example.com", "jessica@example.com"};
+
+        Random random = new Random();
+
+        for (int i = 0; i < 10; i++) {
+            String email = emails[i];
+            String hashedPassword = PasswordHasher.hashPassword("password" + (i + 1));
+
+            String sql = "INSERT INTO " + DatabaseHelper.CUSTOMER_TABLE +
+                    " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            SQLiteStatement statement = db.compileStatement(sql);
+
+            // Bind parameters to the statement
+            statement.bindString(1, email);
+            statement.bindString(2, firstNames[i]);
+            statement.bindString(3, lastNames[random.nextInt(lastNames.length)]);
+            statement.bindString(4, hashedPassword);
+            statement.bindString(5, "059999999" + (i + 1));
+            statement.bindString(6, "PS");
+            statement.bindString(7, "Jerusalem");
+            statement.bindString(8, i % 2 == 0 ? "Male" : "Female");
+            statement.bindLong(9, i % 2 == 0 ? 1 : 0); // 1 for admin, 0 for regular user
+            // Assuming the 10th column is for the image (null in this case)
+
+            // Execute the statement
+            statement.executeInsert();
+            statement.close();
+        }
     }
 
     @Override

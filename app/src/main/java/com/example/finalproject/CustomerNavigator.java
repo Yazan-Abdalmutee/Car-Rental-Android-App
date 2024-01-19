@@ -50,7 +50,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
     FragmentManager fragmentManager;
     Dialog filterDialog;
     ArrayList<CarItemFragment> listOfFragments;
-    boolean[] pages =new boolean[3];
+    boolean[] pages = new boolean[3];
     private ChipGroup chipGroupMake, chipGroupFuelType;
     private RangeSlider sliderYear, sliderPrice;
     SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
@@ -75,13 +75,12 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                     @SuppressLint("Range") String country = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUSTOMER_COUNTRY));
                     @SuppressLint("Range") String city = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUSTOMER_CITY));
                     @SuppressLint("Range") String gender = cursor.getString(cursor.getColumnIndex(DatabaseHelper.CUSTOMER_GENDER));
-                    @SuppressLint("Range") byte []image = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.CUSTOMER_IMAGE));
+                    @SuppressLint("Range") byte[] image = cursor.getBlob(cursor.getColumnIndex(DatabaseHelper.CUSTOMER_IMAGE));
 
                     // Ensure that integer columns have valid values
                     @SuppressLint("Range") int isAdmin = cursor.getInt(cursor.getColumnIndex(DatabaseHelper.IS_ADMIN));
                     // Save the retrieved information into SharedPreferences
-                    sharedPreferencesManager.saveUserInfo(customerEmail, firstName, lastName, passwordHashed,
-                            phoneNumber, country, city, gender, isAdmin);
+                    sharedPreferencesManager.saveUserInfo(customerEmail, firstName, lastName, passwordHashed, phoneNumber, country, city, gender, isAdmin);
                     sharedPreferencesManager.saveUserImage(image);
                 } else {
                     // Handle the case where no matching record is found
@@ -95,7 +94,6 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
             } catch (Exception e) {
                 // Handle any exceptions here
                 e.printStackTrace();
-                Toast.makeText(this, "An error happened in getSignedIn()", Toast.LENGTH_SHORT).show();
             }
         }
         sharedPreferencesManager.setSignedIn(true);
@@ -110,8 +108,8 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.homeItem);
-        CircleImageView profile_image=navigationView.getHeaderView(0).findViewById(R.id.profile_image_header);
-        updateProfileImage(profile_image,sharedPreferencesManager.getImage());
+        CircleImageView profile_image = navigationView.getHeaderView(0).findViewById(R.id.profile_image_header);
+        updateProfileImage(profile_image, sharedPreferencesManager.getImage());
         root_layout = findViewById(R.id.layout_root);
         fragmentManager = getSupportFragmentManager();
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.homeItem));
@@ -150,34 +148,29 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
                 fragmentTransaction.replace(R.id.layout_root, new HomeFragment(), "HomeFrag");
-                fragmentTransaction.commit();
+                fragmentTransaction.commitNow();
             }
         } else if (id == R.id.carMenuItem && !pages[0]) {
 
             DatabaseManager db = MyApplication.getDatabaseManager();
             Cursor AllCarscursor = db.getCarsNotInReservations();
-            listOfFragments = getCars(AllCarscursor,"car");
+            listOfFragments = getCars(AllCarscursor, "car");
 
-        }
-        else if (id == R.id.favorite_menu && !pages[1]) {
+        } else if (id == R.id.favorite_menu && !pages[1]) {
             DatabaseManager db = MyApplication.getDatabaseManager();
             Cursor AllCarscursor = db.getFavoriteCarsForUser(sharedPreferencesManager.getEmail());
-            listOfFragments = getCars(AllCarscursor,"favorite");
-        }
-
-        else if (id == R.id.reservations_menu && !pages[2]) {
+            listOfFragments = getCars(AllCarscursor, "favorite");
+        } else if (id == R.id.reservations_menu && !pages[2]) {
             DatabaseManager db = MyApplication.getDatabaseManager();
             Cursor AllCarscursor = db.getReservationsCarsForUser(sharedPreferencesManager.getEmail());
-            listOfFragments = getCars(AllCarscursor,"reservation");
-        }
-
-        else if (id == R.id.contactMenuItem) {
+            listOfFragments = getCars(AllCarscursor, "reservation");
+        } else if (id == R.id.contactMenuItem) {
             Arrays.fill(pages, false);
             if (!(currentFragment instanceof ContactFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
                 fragmentTransaction.replace(R.id.layout_root, new ContactFragment(), "ContactFrag");
-                fragmentTransaction.commit();
+                fragmentTransaction.commitNow();
             }
         } else if (id == R.id.signOutMenuItem) {
             Arrays.fill(pages, false);
@@ -192,8 +185,24 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
                 fragmentTransaction.replace(R.id.layout_root, new ProfileFragment(), "ProfileFrag");
-                fragmentTransaction.commit();
+                fragmentTransaction.commitNow();
 
+            }
+        } else if (id == R.id.addAdmin) { // check if we are on the same page
+            Arrays.fill(pages, false);
+            if (!(currentFragment instanceof AdminFragment)) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
+                fragmentTransaction.replace(R.id.layout_root, new AdminFragment(), "AdminFrag");
+                fragmentTransaction.commitNow();
+            }
+        } else if (id == R.id.deleteCustomer) {
+            Arrays.fill(pages, false);
+            if (!(currentFragment instanceof DeleteCustomer)) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
+                fragmentTransaction.replace(R.id.layout_root, new DeleteCustomer(), "DeleteCustomer");
+                fragmentTransaction.commitNow();
             }
         }
 
@@ -257,7 +266,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         saveButton.setOnClickListener(v -> {
 
             Cursor cursor = getDataAfterFiltering();
-            listOfFragments = getCars(cursor,"car");
+            listOfFragments = getCars(cursor, "car");
             filterDialog.dismiss();
         });
 
@@ -302,7 +311,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
 
             CarItemFragment currentFragment = (CarItemFragment) fragment;
             String make = currentFragment.getCarModel();
-            if(!db.isCarInReservations(currentFragment.getCarId()) ) {
+            if (!db.isCarInReservations(currentFragment.getCarId())) {
                 if (make.toLowerCase().contains(search.toLowerCase())) {
                     currentFragment.setVisibility(true);
                 } else {
@@ -327,15 +336,12 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
     }
 
 
-    public ArrayList<CarItemFragment> getCars(Cursor cursor,String  page) {
+    public ArrayList<CarItemFragment> getCars(Cursor cursor, String page) {
         ArrayList<CarItemFragment> fragmentList = new ArrayList<>();
         Arrays.fill(pages, false);
-        if (page.equalsIgnoreCase("car"))
-            pages[0] = true;
-        else if (page.equalsIgnoreCase("favorite"))
-            pages[1] = true;
-        else if (page.equalsIgnoreCase("reservation"))
-            pages[2] = true;
+        if (page.equalsIgnoreCase("car")) pages[0] = true;
+        else if (page.equalsIgnoreCase("favorite")) pages[1] = true;
+        else if (page.equalsIgnoreCase("reservation")) pages[2] = true;
 
         removeFragments();
 
@@ -348,7 +354,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         String carFuelType;
         String carClass;
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (cursor!=null) {
+        if (cursor != null) {
             for (int i = 0; i < cursor.getCount(); i++) {
                 if (cursor.moveToNext()) {
                     cardId = cursor.getInt(0);
@@ -357,7 +363,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                     carYear = Integer.parseInt(cursor.getString(3));
                     carPrice = Double.parseDouble(cursor.getString(4));
                     carFuelType = cursor.getString(7);
-                    carClass=cursor.getString(6);
+                    carClass = cursor.getString(6);
 
                     CarItemFragment carItemFragment = new CarItemFragment();
                     Bundle args = new Bundle();
@@ -367,7 +373,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                     args.putString("carFuelType", carFuelType);
                     args.putInt("carYear", carYear);
                     args.putDouble("carPrice", carPrice);
-                    args.putString("class",carClass);
+                    args.putString("class", carClass);
                     carItemFragment.setArguments(args);
 
                     fragmentTransaction.add(R.id.layout_root, carItemFragment);
@@ -387,12 +393,10 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         Menu menu = toolbar.getMenu();
         MenuItem searchItem = menu.findItem(R.id.app_bar_search);
         MenuItem filterItem = menu.findItem(R.id.filter_button);
-        if(id == R.id.carMenuItem)
-        {
+        if (id == R.id.carMenuItem) {
             searchItem.setVisible(true);
             filterItem.setVisible(true);
-        }
-        else {
+        } else {
             searchItem.setVisible(false);
             filterItem.setVisible(false);
         }
@@ -407,19 +411,8 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
             fragmentManager.executePendingTransactions();
         }
     }
-//    private void updateProfileImage(CircleImageView profile_image) {
-//        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
-//        DatabaseManager databaseManager = MyApplication.getDatabaseManager();
-//        byte[] imageByteArray = databaseManager.getCustomerImage(sharedPreferencesManager.getEmail());
-//        if (imageByteArray != null && imageByteArray.length > 0) {
-//            Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-//            Glide.with(this)
-//                    .load(bitmap)
-//                    .into(profile_image);
-//        }
-//    }
 
-    private void updateProfileImage(CircleImageView profile_image, String imageString) {
+    public void updateProfileImage(CircleImageView profile_image, String imageString) {
         SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
         // Uncomment the line below to declare imageByteArray
         // byte[] imageByteArray = Base64.decode(imageString, Base64.DEFAULT);
@@ -427,14 +420,9 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         if (imageString != null && !imageString.isEmpty()) {
             byte[] imageByteArray = Base64.decode(imageString, Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
-            Glide.with(this)
-                    .load(bitmap)
-                    .into(profile_image);
+            Glide.with(this).load(bitmap).into(profile_image);
         }
     }
-
-
-
 
 
 }

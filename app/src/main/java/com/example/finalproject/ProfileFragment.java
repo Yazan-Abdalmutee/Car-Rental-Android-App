@@ -58,6 +58,7 @@ public class ProfileFragment extends Fragment {
         TextView email = view.findViewById(R.id.email_textField);
         profile_image=view.findViewById(R.id.profile_image_header);
         swap_profile_image=view.findViewById(R.id.profile_image_swap);
+        swap_profile_image.setVisibility(View.GONE);
 
         SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(getContext());
         name.setText(sharedPreferencesManager.getFirstName() + " " + sharedPreferencesManager.getLastName());
@@ -112,7 +113,7 @@ public class ProfileFragment extends Fragment {
         edit.setOnClickListener(v -> {
             Transition transition = new Slide();
             TransitionManager.beginDelayedTransition((ViewGroup) view, transition);
-
+            swap_profile_image.setVisibility(View.VISIBLE);
             form.setVisibility(View.VISIBLE);
             save.setVisibility(View.VISIBLE);
             name.setVisibility(View.GONE);
@@ -128,6 +129,7 @@ public class ProfileFragment extends Fragment {
             name.setVisibility(View.VISIBLE);
             email.setVisibility(View.VISIBLE);
             edit.setVisibility(View.VISIBLE);
+            swap_profile_image.setVisibility(View.GONE);
             firstName.setText("");
             lastName.setText("");
             phone.setText("");

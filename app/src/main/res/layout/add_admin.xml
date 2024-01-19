@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:statusBarColor="@color/white"
+    tools:context=".AdminFragment">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/antic"
+        android:paddingBottom="10dp"
+        android:text="@string/fill_new_admin_info_below"
+        android:textColor="@color/gray"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fName_text_input"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/first_name"
+            android:paddingEnd="5dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            app:boxStrokeColor="@color/black"
+            app:suffixTextColor="@color/black"
+            tools:ignore="RtlSymmetry">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                tools:ignore="TextContrastCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lName_text_input"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+            android:hint="@string/last_name"
+            android:paddingStart="5dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            app:boxStrokeColor="@color/black"
+            app:suffixTextColor="@color/black"
+            tools:ignore="RtlSymmetry">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                tools:ignore="TextContrastCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email_text_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/email_hint"
+        android:paddingBottom="7dp"
+
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
+        app:boxStrokeColor="@color/black"
+        app:suffixTextColor="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            tools:ignore="TextContrastCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="true"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/customerSpinnerLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+
+            android:completionThreshold="1"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/country"
+            android:inputType="phone"
+            android:paddingRight="7dp"
+            android:textColorHint="@color/gray"
+            tools:ignore="RtlHardcoded,RtlSymmetry">
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/customerTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:dropDownWidth="wrap_content"
+                android:entries="@array/countries_array"
+                android:inputType="phone"
+                android:textColor="@color/black"
+                tools:ignore="KeyboardInaccessibleWidget,SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phone_text_input"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:hint="@string/phone_number"
+            android:textColorHint="@color/gray"
+            app:boxStrokeColor="@color/black"
+            app:prefixTextColor="@color/paypal_blue">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:shadowColor="#000000"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                tools:ignore="TextContrastCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingBottom="7dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/citySpinnerLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="4"
+            android:completionThreshold="1"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/city"
+            android:inputType="phone"
+            android:paddingRight="7dp"
+            android:textColorHint="@color/gray"
+            app:boxStrokeColor="@color/black"
+            tools:ignore="RtlHardcoded,RtlSymmetry">
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/citySpinnerAutoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:dropDownWidth="wrap_content"
+                android:inputType="phone"
+                android:textColor="@color/black"
+                tools:ignore="KeyboardInaccessibleWidget,SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/genderSpinnerLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:completionThreshold="1"
+
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/gender"
+            android:inputType="phone"
+            android:textColorHint="@color/gray"
+            app:boxStrokeColor="@color/black">
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/genderAutoCompleteTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:dropDownWidth="wrap_content"
+                android:entries="@array/gender_options"
+
+                android:inputType="none"
+                android:textColor="@color/black"
+                tools:ignore="KeyboardInaccessibleWidget,SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_text_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/password"
+        android:paddingBottom="7dp"
+
+        android:textColorHint="@color/gray"
+        app:boxStrokeColor="@color/black"
+        app:counterEnabled="true"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:shadowColor="#000000"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            tools:ignore="TextContrastCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/cPassword_text_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/confirm_password"
+        android:paddingBottom="7dp"
+        android:textColorHint="@color/gray"
+
+        app:boxStrokeColor="@color/black"
+        app:counterEnabled="true"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:shadowColor="#000000"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            tools:ignore="TextContrastCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/addAdmin"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bungee"
+        android:text="Add Admin"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:cornerRadius="10dp"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+</LinearLayout>
+
+
+
+
+

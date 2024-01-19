@@ -28,6 +28,8 @@ import java.util.Arrays;
 // create a car record class
 
 public class ConnectActivity extends AppCompatActivity {
+    DatabaseManager db = MyApplication.getDatabaseManager();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // hide the action bar
@@ -58,7 +60,13 @@ public class ConnectActivity extends AppCompatActivity {
 
         connect.setOnClickListener(v -> {
             /// add transition to the next page
-            new NetworkTask().execute();
+            if (db.getCarCount() > 0) {
+                Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                new NetworkTask().execute();
+            }
         });
 
     }
@@ -95,52 +103,45 @@ public class ConnectActivity extends AppCompatActivity {
         protected void onPostExecute(String apiResult) {
             // check if the API call was successful using the code
             if (apiResult != null) {
-                DatabaseManager db = MyApplication.getDatabaseManager();
-                if (db.getCarCount() == 0) {
-                    try {
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        JsonNode jsonNode = objectMapper.readTree(apiResult);
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    JsonNode jsonNode = objectMapper.readTree(apiResult);
 
-                        // Remove "total_count" attribute
-                        if (jsonNode.has("total_count")) {
-                            ((ObjectNode) jsonNode).remove("total_count");
-                        }
-                        JsonNode resultsArray = jsonNode.get("results");
-                        String[] car_make = {"BMW", "Kia", "Ford", "Audi"};
-                        if (resultsArray.isArray()) {
-                            for (JsonNode result : resultsArray) {
-                                if (Arrays.asList(car_make).contains(result.get("make").asText())) {
-                                    String make = result.get("make").asText();
-                                    String model = result.get("model").asText();
-                                    String drive = result.get("drive").asText();
-                                    String fuelType = result.get("fueltype").asText();
-                                    int randomInt = (int) (Math.random() * 40) + 1;
-                                    int year = Integer.parseInt(result.get("year").asText());
-                                    if (year > 2020) year -= randomInt;
-                                    String vehicleClass = result.get("vclass").asText();
-                                    int price = (int) (Math.random() * 90000 + 10000);
-                                    db.insertCar(make, drive, model, year, price, vehicleClass, fuelType);
-                                    if (db.getCarCount() == 15) break;
-                                }
-                            }
-                            Toast toast = Toast.makeText(ConnectActivity.this, "Loaded " + db.getCarCount() + " Cars", Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    // Remove "total_count" attribute
+                    if (jsonNode.has("total_count")) {
+                        ((ObjectNode) jsonNode).remove("total_count");
                     }
-                    Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
-                    startActivity(intent);
-                    finish();
+                    JsonNode resultsArray = jsonNode.get("results");
+                    String[] car_make = {"BMW", "Kia", "Ford", "Audi"};
+                    if (resultsArray.isArray()) {
+                        for (JsonNode result : resultsArray) {
+                            if (Arrays.asList(car_make).contains(result.get("make").asText())) {
+                                String make = result.get("make").asText();
+                                String model = result.get("model").asText();
+                                String drive = result.get("drive").asText();
+                                String fuelType = result.get("fueltype").asText();
+                                int randomInt = (int) (Math.random() * 40) + 1;
+                                int year = Integer.parseInt(result.get("year").asText());
+                                if (year > 2020) year -= randomInt;
+                                String vehicleClass = result.get("vclass").asText();
+                                int price = (int) (Math.random() * 90000 + 10000);
+                                db.insertCar(make, drive, model, year, price, vehicleClass, fuelType);
+                                if (db.getCarCount() == 15) break;
+                            }
+                        }
+                        Toast toast = Toast.makeText(ConnectActivity.this, "Loaded " + db.getCarCount() + " Cars", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
+                startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(ConnectActivity.this, "API Call Failed", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 }
+

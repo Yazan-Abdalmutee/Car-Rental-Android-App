@@ -8,12 +8,10 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image_header"
-        android:layout_width="212dp"
-        android:layout_height="156dp"
+        android:layout_width="237dp"
+        android:layout_height="185dp"
         android:layout_marginTop="40dp"
         android:src="@drawable/dark_aesthetic_anime_pfp_7"
-        app:civ_border_color="#FF000000"
-        app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,13 +19,11 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image_swap"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:background="@drawable/circle_background"
         android:src="@drawable/rounded_add_24"
         android:tint="#FBFAFA"
-        app:civ_border_color="#00000000"
-        app:civ_border_width="2dp"
         app:layout_constraintBottom_toBottomOf="@id/profile_image_header"
         app:layout_constraintEnd_toEndOf="@id/profile_image_header"
         app:layout_constraintHorizontal_bias="0.819"

@@ -26,7 +26,7 @@ public class DatabaseManager {
 
     // Insert a new customer into the CUSTOMER_TABLE
     public void insertCustomer(String email, String firstName, String lastName, String passwordHashed,
-                               String phoneNumber, String gender, String country, String city) {
+                               String phoneNumber, String gender, String country, String city, int isAdmin) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.CUSTOMER_EMAIL, email.toLowerCase());
         values.put(DatabaseHelper.CUSTOMER_FIRST_NAME, firstName);
@@ -36,7 +36,7 @@ public class DatabaseManager {
         values.put(DatabaseHelper.CUSTOMER_COUNTRY, country);
         values.put(DatabaseHelper.CUSTOMER_CITY, city);
         values.put(DatabaseHelper.CUSTOMER_GENDER, gender);
-        values.put(DatabaseHelper.IS_ADMIN, 0);
+        values.put(DatabaseHelper.IS_ADMIN, isAdmin);
         database.insert(DatabaseHelper.CUSTOMER_TABLE, null, values);
     }
 
@@ -380,4 +380,9 @@ public class DatabaseManager {
     }
 
 
+    public void deleteCustomer(String customerEmail) {
+        String whereClause = DatabaseHelper.CUSTOMER_EMAIL + " = ?";
+        String[] whereArgs = {customerEmail.toLowerCase()};
+        database.delete(DatabaseHelper.CUSTOMER_TABLE, whereClause, whereArgs);
+    }
 }

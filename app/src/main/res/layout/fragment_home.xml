@@ -8,23 +8,15 @@
     tools:context=".HomeFragment">
 
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/company" />
-
     <TextView
         android:id="@+id/textView_homePage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="5dp"
+        android:fontFamily="@font/rubik_light"
+        android:textAlignment="center"
+        android:padding="16dp"
         android:text="Yazan Shrouf"
-        android:textAlignment="viewStart"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textColor="#000000"
+        android:layout_marginBottom="50dp"
+        android:textSize="24sp" />
 </LinearLayout>
