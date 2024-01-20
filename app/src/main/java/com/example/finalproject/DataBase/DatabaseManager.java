@@ -57,7 +57,7 @@ public class DatabaseManager {
 
     // Insert a new car into the CAR_TABLE
     public void insertCar(String carName, String carDrive, String carModel, int carYear,
-                          int carPrice, String carVClass, String carFuel) {
+                          int carPrice, String carVClass, String carFuel,int carOffer) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.CAR_MAKE, carName);
         values.put(DatabaseHelper.CAR_DRIVE, carDrive);
@@ -66,6 +66,7 @@ public class DatabaseManager {
         values.put(DatabaseHelper.CAR_PRICE, carPrice);
         values.put(DatabaseHelper.CAR_VCLASS, carVClass);
         values.put(DatabaseHelper.CAR_FUEL, carFuel);
+        values.put(DatabaseHelper.CAR_OFFER, carOffer);
 
         database.insert(DatabaseHelper.CAR_TABLE, null, values);
     }
@@ -356,11 +357,21 @@ public class DatabaseManager {
         if ((makes != null && makes.length > 0) || (fuels != null && fuels.length > 0))
             whereClause.append(" AND ");
 
+//        whereClause.append("(")
+//                .append(DatabaseHelper.CAR_YEAR).append(" BETWEEN ").append(minYear).append(" AND ").append(maxYear)
+//                .append(") AND (")
+//                .append(DatabaseHelper.CAR_PRICE).append(" BETWEEN ").append(minPrice).append(" AND ").append(maxPrice)
+//                .append(")");
+
         whereClause.append("(")
                 .append(DatabaseHelper.CAR_YEAR).append(" BETWEEN ").append(minYear).append(" AND ").append(maxYear)
-                .append(") AND (")
+                .append(") AND (CASE WHEN ")
+                .append(DatabaseHelper.CAR_OFFER).append(" > 0 THEN (")
+                .append(DatabaseHelper.CAR_OFFER).append(" BETWEEN ").append(minPrice).append(" AND ").append(maxPrice)
+                .append(") ELSE (")
                 .append(DatabaseHelper.CAR_PRICE).append(" BETWEEN ").append(minPrice).append(" AND ").append(maxPrice)
-                .append(")");
+                .append(") END)");
+
 
         whereClause.append(" AND NOT EXISTS (")
                 .append(" SELECT 1 FROM ").append(DatabaseHelper.RESERVATION_TABLE)
@@ -381,6 +392,35 @@ public class DatabaseManager {
         String whereClauseReservation = DatabaseHelper.RESERVATION_EMAIL + " = ?";
         database.delete(DatabaseHelper.RESERVATION_TABLE, whereClauseReservation, whereArgsCustomer);
     }
+    public Cursor getCarsNotInReservationWithOffer() {
+        String carTable = DatabaseHelper.CAR_TABLE;
+        String reservationTable = DatabaseHelper.RESERVATION_TABLE;
+        String subquery = "SELECT DISTINCT " + DatabaseHelper.RESERVATION_CAR_ID +
+                " FROM " + reservationTable;
+        String query = "SELECT * FROM " + carTable +
+                " WHERE " + DatabaseHelper.CAR_ID + " NOT IN (" + subquery + ")" +
+                " AND " + DatabaseHelper.CAR_OFFER + " > 0";
+        return database.rawQuery(query, null);
+    }
+
+
+    public int getCarOffer(int carId) {
+        int carOffer = 0;
+        String selection = DatabaseHelper.CAR_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(carId)};
+        Cursor cursor = database.rawQuery("SELECT " + DatabaseHelper.CAR_OFFER + " FROM " + DatabaseHelper.CAR_TABLE +
+                " WHERE " + selection, selectionArgs);
+        if (cursor != null && cursor.moveToFirst()) {
+            carOffer = cursor.getInt(0);
+
+            cursor.close();
+        }
+
+        return carOffer;
+    }
+
+
+
 
 
 }

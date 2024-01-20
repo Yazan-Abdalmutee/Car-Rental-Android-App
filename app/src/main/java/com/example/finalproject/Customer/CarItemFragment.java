@@ -1,6 +1,7 @@
 package com.example.finalproject.Customer;
 
 import android.app.Dialog;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,8 @@ public class CarItemFragment extends Fragment {
     String carModel;
     String carFuelType;
     int carYear, carId;
-    double carPrice;
+    int carPrice;
+    int carOffer;
     DatabaseManager db = MyApplication.getDatabaseManager();
     private boolean isCarInFavorites = false;
 
@@ -89,8 +91,9 @@ public class CarItemFragment extends Fragment {
         carModel = args.getString("carModel", "");
         carFuelType = args.getString("carFuelType", "");
         carYear = args.getInt("carYear", 0);
-        carPrice = args.getDouble("carPrice", 0.0);
+        carPrice = (int)args.getDouble("carPrice", 0.0);
         carClass=args.getString("class","");
+        carOffer=args.getInt("carOffer",0);
 
         TextView car_make = view.findViewById(R.id.car_make_item);
         TextView car_model = view.findViewById(R.id.car_model_item);
@@ -98,6 +101,7 @@ public class CarItemFragment extends Fragment {
         TextView car_year = view.findViewById(R.id.car_year_item);
         TextView car_price = view.findViewById(R.id.car_price_item);
         TextView car_class = view.findViewById(R.id.car_Class_item);
+        TextView car_offer= view.findViewById(R.id.car_item_offer);
 
         TextView car_reservationDate = view.findViewById(R.id.reservation_date);
         LinearLayout showLayoutDate = view.findViewById(R.id.expand_reserve_date);
@@ -108,6 +112,7 @@ public class CarItemFragment extends Fragment {
         car_year.setText(String.valueOf(carYear));
         car_price.setText(carPrice + "$");
         car_class.setText(carClass);
+        car_offer.setText(carOffer+ "$");
 
 
         isCarInFavorites = db.isCarInFavorites(carId, email);
@@ -126,6 +131,15 @@ public class CarItemFragment extends Fragment {
         } else {
             cardView.setVisibility(View.VISIBLE);
             showLayoutDate.setVisibility(View.GONE);
+        }
+        int offer_value=db.getCarOffer(carId);
+        if(offer_value<=0)
+        {
+            car_offer.setVisibility(View.GONE);
+        }
+        else {
+            car_price.setPaintFlags(car_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
         }
 
 
@@ -160,17 +174,28 @@ public class CarItemFragment extends Fragment {
             TextView car_year_dialog = dialog.findViewById(R.id.car_year_dialog);
             TextView car_price_dialog = dialog.findViewById(R.id.car_price_dialog);
             TextView car_class_dialog = dialog.findViewById(R.id.car_Class_dialog);
+            TextView car_offer_dialog = dialog.findViewById(R.id.car_offer_popUp);
+
 
             Button closeButton = dialog.findViewById(R.id.cancel_button_dialog);
             Button confirm = dialog.findViewById(R.id.confirm_buton_dialog);
             CardView card = dialog.findViewById(R.id.car_card_dialog);
-            card.setBackgroundResource(R.drawable.card_border);
             car_make_dialog.setText(carMake);
             car_model_dialog.setText(carModel);
             car_fuelType_dialog.setText(carFuelType);
             car_year_dialog.setText(String.valueOf(carYear));
             car_price_dialog.setText(carPrice + "$");
             car_class_dialog.setText(carClass);
+            car_offer_dialog.setText(carOffer+"$");
+
+            if(offer_value<=0)
+            {
+                car_offer_dialog.setVisibility(View.GONE);
+            }
+            else {
+                car_price_dialog.setPaintFlags(car_price_dialog.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+            }
 
             closeButton.setOnClickListener(v -> dialog.dismiss());
             confirm.setOnClickListener(v -> {

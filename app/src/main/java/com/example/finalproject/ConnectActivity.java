@@ -124,9 +124,14 @@ public class ConnectActivity extends AppCompatActivity {
                                 int randomInt = (int) (Math.random() * 40) + 1;
                                 int year = Integer.parseInt(result.get("year").asText());
                                 if (year > 2020) year -= randomInt;
+                                int catOffer=0;
                                 String vehicleClass = result.get("vclass").asText();
                                 int price = (int) (Math.random() * 90000 + 10000);
-                                db.insertCar(make, drive, model, year, price, vehicleClass, fuelType);
+                                if(price>60000)
+                                {
+                                 catOffer=price-((price*10)/100);
+                                }
+                                db.insertCar(make, drive, model, year, price, vehicleClass, fuelType,catOffer);
                                 if (db.getCarCount() == 15) break;
                             }
                         }

@@ -59,7 +59,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
     FragmentManager fragmentManager;
     Dialog filterDialog;
     ArrayList<CarItemFragment> listOfFragments;
-    boolean[] pages = new boolean[3];
+    boolean[] pages = new boolean[4];
     private ChipGroup chipGroupMake, chipGroupFuelType;
     private RangeSlider sliderYear, sliderPrice;
     SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
@@ -171,7 +171,12 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
             DatabaseManager db = MyApplication.getDatabaseManager();
             Cursor AllCarscursor = db.getReservationsCarsForUser(sharedPreferencesManager.getEmail());
             listOfFragments = getCars(AllCarscursor, "reservation");
-        } else if (id == R.id.contactMenuItem) {
+        } else if (id == R.id.offer_menu && !pages[3]) {
+            DatabaseManager db = MyApplication.getDatabaseManager();
+            Cursor AllCarscursor = db.getCarsNotInReservationWithOffer();
+            listOfFragments = getCars(AllCarscursor, "offer");
+        }
+        else if (id == R.id.contactMenuItem) {
             Arrays.fill(pages, false);
             if (!(currentFragment instanceof ContactFragment)) {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -358,6 +363,9 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         if (page.equalsIgnoreCase("car")) pages[0] = true;
         else if (page.equalsIgnoreCase("favorite")) pages[1] = true;
         else if (page.equalsIgnoreCase("reservation")) pages[2] = true;
+        else if (page.equalsIgnoreCase("offer")) pages[3] = true;
+
+
 
         removeFragments();
 
@@ -369,6 +377,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         double carPrice;
         String carFuelType;
         String carClass;
+        int carOffer=0;
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (cursor != null) {
             for (int i = 0; i < cursor.getCount(); i++) {
@@ -380,6 +389,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                     carPrice = Double.parseDouble(cursor.getString(4));
                     carFuelType = cursor.getString(7);
                     carClass = cursor.getString(6);
+                    carOffer=cursor.getInt(8);
 
                     CarItemFragment carItemFragment = new CarItemFragment();
                     Bundle args = new Bundle();
@@ -390,6 +400,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                     args.putInt("carYear", carYear);
                     args.putDouble("carPrice", carPrice);
                     args.putString("class", carClass);
+                    args.putInt("carOffer",carOffer);
                     carItemFragment.setArguments(args);
 
                     fragmentTransaction.add(R.id.layout_root, carItemFragment);
@@ -436,6 +447,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
             Glide.with(this).load(bitmap).into(profile_image);
         }
     }
+
 
 
 }

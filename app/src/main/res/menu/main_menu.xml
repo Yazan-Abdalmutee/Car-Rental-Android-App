@@ -33,6 +33,7 @@
                 android:icon="@drawable/reserve_selector"
                 android:title="@string/reservations" />
             <item
+                android:id="@+id/offer_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"

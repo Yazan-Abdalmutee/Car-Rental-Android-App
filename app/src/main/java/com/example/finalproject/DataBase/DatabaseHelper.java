@@ -24,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CAR_PRICE = "carPrice";
     public static final String CAR_VCLASS = "carVClass";
     public static final String CAR_FUEL = "carFuel";
+    public static final String CAR_OFFER="carOffer";
     // Customer Table columns
     public static final String CUSTOMER_EMAIL = "email";
     public static final String CUSTOMER_FIRST_NAME = "firstName";
@@ -63,7 +64,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             CAR_PRICE + " INTEGER NOT NULL, " +
             CAR_VCLASS + " TEXT NOT NULL, " +
             CAR_DRIVE + " TEXT NOT NULL, " +
-            CAR_FUEL + " TEXT NOT NULL);";
+            CAR_FUEL + " TEXT NOT NULL, " +
+            CAR_OFFER + " INTEGER NOT NULL);";
     public static final String CREATE_RESERVATION_TABLE = "CREATE TABLE if not exists " + RESERVATION_TABLE + "(" +
             RESERVATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             RESERVATION_CAR_ID + " INTEGER NOT NULL, " +
@@ -82,7 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "CAPITALCARS.DB";
     // database version
-    static final int DB_VERSION = 142;
+    static final int DB_VERSION = 146;
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
