@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:layout_marginTop="100dp"
-    tools:context=".ContactFragment">
+    tools:context=".Customer.ContactFragment">
 
     <!-- Your existing UI elements -->
 

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.finalproject.DataBase.DatabaseManager;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -40,22 +41,22 @@ public class ConnectActivity extends AppCompatActivity {
         Button connect = findViewById(R.id.connectButton);
 
         connect.setAlpha(0f);
-        connect.animate().alpha(1f).setDuration(1000).setStartDelay(2000);
+        connect.animate().alpha(1f).setDuration(1000).setStartDelay(1000);
         // animate the logo to drop down in 2 seconds
         ImageView logo = findViewById(R.id.logo);
         logo.setTranslationY(-3000f);
-        logo.animate().translationYBy(3000f).setDuration(3000);
+        logo.animate().translationYBy(3000f).setDuration(2000);
         // animate the slogan to appear from the left in 2 seconds
         TextView slogan = findViewById(R.id.connectSlogan);
         slogan.setTranslationX(-3000f);
         slogan.setAlpha(0.1f);
-        slogan.animate().alpha(1f).setDuration(3000);
-        slogan.animate().translationXBy(3000f).setDuration(3000);
+        slogan.animate().alpha(1f).setDuration(2000);
+        slogan.animate().translationXBy(3000f).setDuration(2000);
         View divider = findViewById(R.id.divider);
         divider.setTranslationX(-3000f);
         divider.setAlpha(0.1f);
-        divider.animate().alpha(1f).setDuration(3000);
-        divider.animate().translationXBy(3000f).setDuration(3000);
+        divider.animate().alpha(1f).setDuration(2000);
+        divider.animate().translationXBy(3000f).setDuration(2000);
         // -- end of animation --
 
         connect.setOnClickListener(v -> {

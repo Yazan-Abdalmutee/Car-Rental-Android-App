@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="20dp"
     android:statusBarColor="@color/white"
-    tools:context=".AdminFragment">
+    tools:context=".Admin.AdminFragment">
 
 
     <TextView

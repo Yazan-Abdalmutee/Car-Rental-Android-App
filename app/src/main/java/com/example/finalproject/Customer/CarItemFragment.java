@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.Customer;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -13,6 +13,11 @@ import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+
+import com.example.finalproject.DataBase.DatabaseManager;
+import com.example.finalproject.DataBase.SharedPreferencesManager;
+import com.example.finalproject.MyApplication;
+import com.example.finalproject.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -78,6 +83,7 @@ public class CarItemFragment extends Fragment {
         String email = sharedPreferencesManager.getEmail();
 
 
+
         carId = args.getInt("carId", 0);
         carMake = args.getString("carMake", "");
         carModel = args.getString("carModel", "");
@@ -112,12 +118,13 @@ public class CarItemFragment extends Fragment {
         } else {
             favorite.setImageResource(R.drawable.heart);
         }
-        if (db.isCarInReservations(carId)) {
+        if (db.isCarInReservation(carId)) {
             showLayoutDate.setVisibility(View.VISIBLE);
             reserveButton.setVisibility(View.GONE);
             car_reservationDate.setText(db.getReservationDateForCar(carId));
 
         } else {
+            cardView.setVisibility(View.VISIBLE);
             showLayoutDate.setVisibility(View.GONE);
         }
 
@@ -138,6 +145,9 @@ public class CarItemFragment extends Fragment {
             }
             //db.close();
         });
+        if(sharedPreferencesManager.getIsAdmin()==1)
+            reserveButton.setVisibility(view.GONE);
+
 
 
         reserveButton.setOnClickListener(view1 -> {
@@ -164,17 +174,17 @@ public class CarItemFragment extends Fragment {
 
             closeButton.setOnClickListener(v -> dialog.dismiss());
             confirm.setOnClickListener(v -> {
-                if (!db.isCarInReservations(carId)) ;
+                if (!db.isCarInReservation(carId))
                 {
                     Date currentDateTime = Calendar.getInstance().getTime();
                     SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String dateTime = dateTimeFormat.format(currentDateTime);
                     db.insertReservation(carId, email, dateTime);
-                    dialog.dismiss();
                     Toast.makeText(getContext(), "The car has been successfully reserved", Toast.LENGTH_SHORT).show();
                     cardView.setVisibility(View.GONE);
-
+                    dialog.dismiss();
                 }
+
             });
             dialog.show();
         });

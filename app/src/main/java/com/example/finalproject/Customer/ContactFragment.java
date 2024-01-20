@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.Customer;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.finalproject.R;
 
 
 public class ContactFragment extends Fragment {

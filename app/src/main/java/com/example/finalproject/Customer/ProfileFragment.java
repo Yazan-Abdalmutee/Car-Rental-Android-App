@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.Customer;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -27,6 +27,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.finalproject.DataBase.PasswordHasher;
+import com.example.finalproject.DataBase.SharedPreferencesManager;
+import com.example.finalproject.DataBase.DatabaseManager;
+import com.example.finalproject.MyApplication;
+import com.example.finalproject.R;
+import com.example.finalproject.SignUpActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 

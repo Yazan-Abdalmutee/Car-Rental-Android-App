@@ -4,6 +4,8 @@ import android.app.Application;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.example.finalproject.DataBase.DatabaseManager;
+
 public class MyApplication extends Application {
 
     private static DatabaseManager databaseManager;

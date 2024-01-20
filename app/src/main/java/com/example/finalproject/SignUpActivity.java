@@ -15,6 +15,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.finalproject.Customer.CustomerNavigator;
+import com.example.finalproject.DataBase.DatabaseManager;
+import com.example.finalproject.DataBase.PasswordHasher;
+import com.example.finalproject.DataBase.SharedPreferencesManager;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class SignUpActivity extends AppCompatActivity {

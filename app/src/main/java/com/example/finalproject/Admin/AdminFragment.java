@@ -1,11 +1,8 @@
-package com.example.finalproject;
+package com.example.finalproject.Admin;
 
 import static com.example.finalproject.SignUpActivity.isValidPassword;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,6 +19,10 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.finalproject.DataBase.DatabaseManager;
+import com.example.finalproject.DataBase.PasswordHasher;
+import com.example.finalproject.MyApplication;
+import com.example.finalproject.R;
 import com.google.android.material.textfield.TextInputLayout;
 
 

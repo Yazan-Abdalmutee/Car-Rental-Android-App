@@ -12,13 +12,13 @@
         tools:layout_editor_absoluteY="1dp">
 
         <LinearLayout
-            android:id="@+id/view"
+            android:id="@+id/view_reserves"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textVieww"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />

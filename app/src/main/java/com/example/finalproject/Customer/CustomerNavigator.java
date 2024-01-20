@@ -1,4 +1,4 @@
-package com.example.finalproject;
+package com.example.finalproject.Customer;
 
 
 import android.annotation.SuppressLint;
@@ -28,6 +28,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.example.finalproject.Admin.DeleteCustomer;
+import com.example.finalproject.Admin.ViewAllReserves;
+import com.example.finalproject.Admin.AdminFragment;
+import com.example.finalproject.DataBase.DatabaseHelper;
+import com.example.finalproject.DataBase.DatabaseManager;
+import com.example.finalproject.DataBase.SharedPreferencesManager;
+import com.example.finalproject.SignInActivity;
+import com.example.finalproject.MyApplication;
+import com.example.finalproject.R;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.navigation.NavigationView;
@@ -108,7 +117,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.homeItem);
-        CircleImageView profile_image = navigationView.getHeaderView(0).findViewById(R.id.profile_image_header);
+        profile_image = navigationView.getHeaderView(0).findViewById(R.id.profile_image_header);
         updateProfileImage(profile_image, sharedPreferencesManager.getImage());
         root_layout = findViewById(R.id.layout_root);
         fragmentManager = getSupportFragmentManager();
@@ -135,12 +144,10 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) { //navigation drawer
-
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.layout_root);
         int id = item.getItemId();
-
         setItemsVisibility(id);
-
+        updateProfileImage(profile_image, sharedPreferencesManager.getImage());
         if (item.isCheckable()) toolbar.setTitle(item.getTitle());
         if (id == R.id.homeItem) {
             Arrays.fill(pages, false);
@@ -153,7 +160,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.carMenuItem && !pages[0]) {
 
             DatabaseManager db = MyApplication.getDatabaseManager();
-            Cursor AllCarscursor = db.getCarsNotInReservations();
+            Cursor AllCarscursor = db.getCarsNotInReservation();
             listOfFragments = getCars(AllCarscursor, "car");
 
         } else if (id == R.id.favorite_menu && !pages[1]) {
@@ -202,6 +209,15 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
                 fragmentTransaction.replace(R.id.layout_root, new DeleteCustomer(), "DeleteCustomer");
+                fragmentTransaction.commitNow();
+            }
+        }
+        else if (id == R.id.viewAllReserve) {
+            Arrays.fill(pages, false);
+            if (!(currentFragment instanceof ViewAllReserves)) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_left);
+                fragmentTransaction.replace(R.id.layout_root, new ViewAllReserves(), "ViewAllReserves");
                 fragmentTransaction.commitNow();
             }
         }
@@ -311,7 +327,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
 
             CarItemFragment currentFragment = (CarItemFragment) fragment;
             String make = currentFragment.getCarModel();
-            if (!db.isCarInReservations(currentFragment.getCarId())) {
+            if (!db.isCarInReservation(currentFragment.getCarId())) {
                 if (make.toLowerCase().contains(search.toLowerCase())) {
                     currentFragment.setVisibility(true);
                 } else {
@@ -414,9 +430,6 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
 
     public void updateProfileImage(CircleImageView profile_image, String imageString) {
         SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
-        // Uncomment the line below to declare imageByteArray
-        // byte[] imageByteArray = Base64.decode(imageString, Base64.DEFAULT);
-
         if (imageString != null && !imageString.isEmpty()) {
             byte[] imageByteArray = Base64.decode(imageString, Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
