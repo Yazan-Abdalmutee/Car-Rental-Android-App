@@ -1,6 +1,8 @@
 package com.example.finalproject.Customer;
 
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.finalproject.DataBase.DatabaseManager;
 import com.example.finalproject.DataBase.SharedPreferencesManager;
 import com.example.finalproject.MyApplication;
@@ -102,6 +105,12 @@ public class CarItemFragment extends Fragment {
         TextView car_price = view.findViewById(R.id.car_price_item);
         TextView car_class = view.findViewById(R.id.car_Class_item);
         TextView car_offer= view.findViewById(R.id.car_item_offer);
+        ImageView car_image=view.findViewById(R.id.car_item_image);
+
+        byte[] imageByteArray=db.getCarImage(carId);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length);
+        Glide.with(this).load(bitmap).into(car_image);
+
 
         TextView car_reservationDate = view.findViewById(R.id.reservation_date);
         LinearLayout showLayoutDate = view.findViewById(R.id.expand_reserve_date);
@@ -175,6 +184,11 @@ public class CarItemFragment extends Fragment {
             TextView car_price_dialog = dialog.findViewById(R.id.car_price_dialog);
             TextView car_class_dialog = dialog.findViewById(R.id.car_Class_dialog);
             TextView car_offer_dialog = dialog.findViewById(R.id.car_offer_popUp);
+            ImageView car_image_dialog=dialog.findViewById(R.id.imageView_dialog);
+            Glide.with(this).load(bitmap).into(car_image_dialog);
+
+
+
 
 
             Button closeButton = dialog.findViewById(R.id.cancel_button_dialog);
@@ -187,6 +201,7 @@ public class CarItemFragment extends Fragment {
             car_price_dialog.setText(carPrice + "$");
             car_class_dialog.setText(carClass);
             car_offer_dialog.setText(carOffer+"$");
+
 
             if(offer_value<=0)
             {
@@ -220,6 +235,8 @@ public class CarItemFragment extends Fragment {
         });
         return view;
     }
+
+
 
 
 }

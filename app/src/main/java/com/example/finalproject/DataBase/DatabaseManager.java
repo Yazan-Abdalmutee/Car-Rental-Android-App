@@ -6,8 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-
-import com.example.finalproject.DataBase.DatabaseHelper;
+import android.util.Log;
 
 public class DatabaseManager {
 
@@ -43,10 +42,6 @@ public class DatabaseManager {
     }
 
 
-
-
-
-
     public void updateCustomerImage(String email, byte[] image) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.CUSTOMER_IMAGE, image);
@@ -55,9 +50,33 @@ public class DatabaseManager {
         database.update(DatabaseHelper.CUSTOMER_TABLE, values, whereClause, whereArgs);
     }
 
+    public void updateCarImage(int carId, byte[] image) {
+        if (image == null || image.length == 0) {
+            // Handle the case where the image is null or empty
+            Log.d("updateCarImage", "Invalid image data provided for carId: " + carId);
+            return;
+        }
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.CAR_IMAGE, image);
+
+        String selection = DatabaseHelper.CAR_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(carId)};
+
+        int rowsUpdated = database.update(DatabaseHelper.CAR_TABLE, values, selection, selectionArgs);
+
+        if (rowsUpdated <= 0) {
+            // Handle the case where the update operation didn't affect any rows
+            Log.d("updateCarImage", "Failed to update image for carId: " + carId);
+        }
+    }
+
+
+
     // Insert a new car into the CAR_TABLE
     public void insertCar(String carName, String carDrive, String carModel, int carYear,
-                          int carPrice, String carVClass, String carFuel,int carOffer) {
+                          int carPrice, String carVClass, String carFuel, int carOffer,
+                          byte[] carImage) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.CAR_MAKE, carName);
         values.put(DatabaseHelper.CAR_DRIVE, carDrive);
@@ -67,6 +86,7 @@ public class DatabaseManager {
         values.put(DatabaseHelper.CAR_VCLASS, carVClass);
         values.put(DatabaseHelper.CAR_FUEL, carFuel);
         values.put(DatabaseHelper.CAR_OFFER, carOffer);
+        values.put(DatabaseHelper.CAR_IMAGE, carImage);
 
         database.insert(DatabaseHelper.CAR_TABLE, null, values);
     }
@@ -139,7 +159,7 @@ public class DatabaseManager {
 
     public boolean isCarInReservation(int carId) {
         String selection = DatabaseHelper.RESERVATION_CAR_ID + " = ?";
-        String[] selectionArgs = { String.valueOf(carId) };
+        String[] selectionArgs = {String.valueOf(carId)};
 
         Cursor cursor = database.query(
                 DatabaseHelper.RESERVATION_TABLE,
@@ -183,6 +203,9 @@ public class DatabaseManager {
         return database.query(DatabaseHelper.CUSTOMER_TABLE, null, selection, null, null, null, null);
     }
 
+    public Cursor getAllCars() {
+        return database.query(DatabaseHelper.CAR_TABLE, null, null, null, null, null, null);
+    }
 
     public Cursor getAllReserves() {
         String query = "SELECT " +
@@ -204,7 +227,6 @@ public class DatabaseManager {
     }
 
 
-
     public Cursor getFavoriteCarsForUser(String userEmail) {
         userEmail = userEmail.toLowerCase();
         String query = "SELECT * FROM " + DatabaseHelper.CAR_TABLE +
@@ -215,13 +237,6 @@ public class DatabaseManager {
                 " = '" + userEmail + "'";
         return database.rawQuery(query, null);
     }
-
-
-
-
-
-
-
 
 
     public boolean isEmailUsed(String email) {
@@ -324,7 +339,6 @@ public class DatabaseManager {
     }
 
 
-
     public Cursor getCarsByFilterAndNotInReservations(String[] makes, String[] fuels, int minYear, int maxYear, int minPrice, int maxPrice) {
 
         StringBuilder whereClause = new StringBuilder();
@@ -357,12 +371,6 @@ public class DatabaseManager {
         if ((makes != null && makes.length > 0) || (fuels != null && fuels.length > 0))
             whereClause.append(" AND ");
 
-//        whereClause.append("(")
-//                .append(DatabaseHelper.CAR_YEAR).append(" BETWEEN ").append(minYear).append(" AND ").append(maxYear)
-//                .append(") AND (")
-//                .append(DatabaseHelper.CAR_PRICE).append(" BETWEEN ").append(minPrice).append(" AND ").append(maxPrice)
-//                .append(")");
-
         whereClause.append("(")
                 .append(DatabaseHelper.CAR_YEAR).append(" BETWEEN ").append(minYear).append(" AND ").append(maxYear)
                 .append(") AND (CASE WHEN ")
@@ -392,6 +400,7 @@ public class DatabaseManager {
         String whereClauseReservation = DatabaseHelper.RESERVATION_EMAIL + " = ?";
         database.delete(DatabaseHelper.RESERVATION_TABLE, whereClauseReservation, whereArgsCustomer);
     }
+
     public Cursor getCarsNotInReservationWithOffer() {
         String carTable = DatabaseHelper.CAR_TABLE;
         String reservationTable = DatabaseHelper.RESERVATION_TABLE;
@@ -418,7 +427,24 @@ public class DatabaseManager {
 
         return carOffer;
     }
+    public byte[] getCarImage(int carId) {
+        byte[] carImage = null;
+        String selection = DatabaseHelper.CAR_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(carId)};
 
+        Cursor cursor = database.rawQuery("SELECT " + DatabaseHelper.CAR_IMAGE +
+                " FROM " + DatabaseHelper.CAR_TABLE +
+                " WHERE " + selection, selectionArgs);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(DatabaseHelper.CAR_IMAGE);
+            carImage = cursor.getBlob(columnIndex);
+
+            cursor.close();
+        }
+
+        return carImage;
+    }
 
 
 

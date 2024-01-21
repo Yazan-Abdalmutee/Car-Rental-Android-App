@@ -112,11 +112,16 @@ public class ConnectActivity extends AppCompatActivity {
                     if (jsonNode.has("total_count")) {
                         ((ObjectNode) jsonNode).remove("total_count");
                     }
+                    int i=1;
                     JsonNode resultsArray = jsonNode.get("results");
                     String[] car_make = {"BMW", "Kia", "Ford", "Audi"};
                     if (resultsArray.isArray()) {
                         for (JsonNode result : resultsArray) {
                             if (Arrays.asList(car_make).contains(result.get("make").asText())) {
+                                String drawableName = "cars/" + i;
+                                i++;
+                                int drawableResourceId = getResources().getIdentifier(drawableName, "drawable", getPackageName());
+
                                 String make = result.get("make").asText();
                                 String model = result.get("model").asText();
                                 String drive = result.get("drive").asText();
@@ -131,7 +136,7 @@ public class ConnectActivity extends AppCompatActivity {
                                 {
                                  catOffer=price-((price*10)/100);
                                 }
-                                db.insertCar(make, drive, model, year, price, vehicleClass, fuelType,catOffer);
+                                db.insertCar(make, drive, model, year, price, vehicleClass, fuelType,catOffer,null);
                                 if (db.getCarCount() == 15) break;
                             }
                         }

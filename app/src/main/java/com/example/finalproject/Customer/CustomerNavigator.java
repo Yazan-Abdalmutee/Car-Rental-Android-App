@@ -4,11 +4,15 @@ package com.example.finalproject.Customer;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -42,6 +46,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.slider.RangeSlider;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -131,6 +136,8 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         TextView name = navigationView.getHeaderView(0).findViewById(R.id.nameHeader);
         String n = sharedPreferencesManager.getFirstName() + " " + sharedPreferencesManager.getLastName();
         name.setText(n);
+        setCarsImages();
+
 
     }
 
@@ -171,7 +178,9 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
             DatabaseManager db = MyApplication.getDatabaseManager();
             Cursor AllCarscursor = db.getReservationsCarsForUser(sharedPreferencesManager.getEmail());
             listOfFragments = getCars(AllCarscursor, "reservation");
+
         } else if (id == R.id.offer_menu && !pages[3]) {
+
             DatabaseManager db = MyApplication.getDatabaseManager();
             Cursor AllCarscursor = db.getCarsNotInReservationWithOffer();
             listOfFragments = getCars(AllCarscursor, "offer");
@@ -449,8 +458,41 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
     }
 
 
+    public void setCarsImages() {
+        DatabaseManager db = MyApplication.getDatabaseManager();
+        Cursor cursor = db.getAllCars();
+        Resources resources = getResources();
+        int j=1;
+        for (int i = 0; i < cursor.getCount(); i++) {
+            if (j==8)
+            {
+                j=1;
+            }
+            String imageName = "car" + (j + 1);
+            int drawableId = resources.getIdentifier(imageName, "drawable", getPackageName());
+            if (drawableId != 0) {
+                Drawable drawable = resources.getDrawable(drawableId, null);
+                Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] imageBytes = stream.toByteArray();
+                db.updateCarImage(i+1, imageBytes);
+                Log.d("updateCarImage", "HIIIIIIIIIIIIIIIIIII  "+(i+1));
 
+
+            }
+            else
+            {
+                Log.d("updateCarImage", "Failed to update image for carId: " );
+
+            }
+            j++;
+        }
+
+
+    }
 }
+
 
 
 
