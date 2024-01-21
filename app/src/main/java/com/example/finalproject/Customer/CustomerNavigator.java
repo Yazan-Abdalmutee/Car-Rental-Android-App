@@ -477,14 +477,6 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] imageBytes = stream.toByteArray();
                 db.updateCarImage(i+1, imageBytes);
-                Log.d("updateCarImage", "HIIIIIIIIIIIIIIIIIII  "+(i+1));
-
-
-            }
-            else
-            {
-                Log.d("updateCarImage", "Failed to update image for carId: " );
-
             }
             j++;
         }

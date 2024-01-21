@@ -51,11 +51,7 @@ public class DatabaseManager {
     }
 
     public void updateCarImage(int carId, byte[] image) {
-        if (image == null || image.length == 0) {
-            // Handle the case where the image is null or empty
-            Log.d("updateCarImage", "Invalid image data provided for carId: " + carId);
-            return;
-        }
+
 
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.CAR_IMAGE, image);
@@ -63,12 +59,9 @@ public class DatabaseManager {
         String selection = DatabaseHelper.CAR_ID + " = ?";
         String[] selectionArgs = {String.valueOf(carId)};
 
-        int rowsUpdated = database.update(DatabaseHelper.CAR_TABLE, values, selection, selectionArgs);
+        database.update(DatabaseHelper.CAR_TABLE, values, selection, selectionArgs);
 
-        if (rowsUpdated <= 0) {
-            // Handle the case where the update operation didn't affect any rows
-            Log.d("updateCarImage", "Failed to update image for carId: " + carId);
-        }
+
     }
 
 
