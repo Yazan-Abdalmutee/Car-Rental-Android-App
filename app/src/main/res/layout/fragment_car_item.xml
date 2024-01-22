@@ -51,6 +51,38 @@
                     android:fontFamily="sans-serif-condensed"
                     android:text="Bugatti"
                     android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="Price:"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/car_price_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="1000"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/car_item_offer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="10000$"
+                        android:textColor="#3E3838"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -87,38 +119,6 @@
             android:paddingLeft="10dp"
             android:visibility="gone"
             tools:visibility="visible">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="Price:"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/car_price_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="1000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/car_item_offer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="10000$"
-                    android:textColor="#3E3838"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -184,6 +184,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:fontFamily="sans-serif-condensed"
+                    android:maxLines="1"
                     android:text="2024"
                     android:textSize="18sp" />
 

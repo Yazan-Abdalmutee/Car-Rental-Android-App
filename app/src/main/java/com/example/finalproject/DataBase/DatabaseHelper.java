@@ -86,7 +86,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     static final String DB_NAME = "CAPITALCARS.DB";
     // database version
-    static final int DB_VERSION = 153;
+    static final int DB_VERSION = 155;
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

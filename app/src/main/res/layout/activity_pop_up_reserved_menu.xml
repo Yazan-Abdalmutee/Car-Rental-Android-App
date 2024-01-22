@@ -149,6 +149,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:fontFamily="sans-serif-condensed"
+                        android:maxLines="1"
                         android:text="2024"
                         android:textSize="18sp" />
 
