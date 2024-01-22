@@ -137,7 +137,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             statement.bindString(7, "Jerusalem");
             statement.bindString(8, i % 2 == 0 ? "Male" : "Female");
             statement.bindLong(9, i % 2 == 0 ? 1 : 0); // 1 for admin, 0 for regular user
-            // Assuming the 10th column is for the image (null in this case)
 
             // Execute the statement
             statement.executeInsert();

@@ -248,7 +248,6 @@ public class DatabaseManager {
             return cursor != null && cursor.moveToFirst();
 
         }
-        // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
     }
 
     public boolean isLoginCredentialsValid(String email, String password) {
@@ -262,10 +261,8 @@ public class DatabaseManager {
                 null,
                 null
         )) {
-            // Check if the cursor has any rows, indicating a match
             return cursor != null && cursor.getCount() > 0;
         }
-        // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
     }
 
     public int getCarCount() {
@@ -297,7 +294,6 @@ public class DatabaseManager {
                     null
             );
 
-            // Note: If no matching record is found, cursor will be null
         } catch (Exception e) {
             // Handle any exceptions here
             e.printStackTrace();
@@ -308,7 +304,6 @@ public class DatabaseManager {
 
 
     public void editCustomer(String email, String firstName, String lastName, String phone, String password) {
-        // Assuming 'database' is your SQLiteDatabase instance
 
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.CUSTOMER_FIRST_NAME, firstName);
