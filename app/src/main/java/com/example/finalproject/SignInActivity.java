@@ -30,11 +30,7 @@ public class SignInActivity extends AppCompatActivity {
         TextInputLayout emailLayout = findViewById(R.id.email_text_input);
         EditText email = emailLayout.getEditText();
         SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
-        if (sharedPreferencesManager.getSignedIn()) {
-            Intent intent = new Intent(SignInActivity.this, CustomerNavigator.class);
-            startActivity(intent);
-            finish();
-        }
+
         assert email != null;
         if (sharedPreferencesManager.getEmail() != null) {
             email.setText(sharedPreferencesManager.getRememberMe());

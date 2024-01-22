@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.finalproject.Customer.CustomerNavigator;
 import com.example.finalproject.DataBase.DatabaseManager;
+import com.example.finalproject.DataBase.SharedPreferencesManager;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -57,14 +59,20 @@ public class ConnectActivity extends AppCompatActivity {
         divider.setAlpha(0.1f);
         divider.animate().alpha(1f).setDuration(2000);
         divider.animate().translationXBy(3000f).setDuration(2000);
+        SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance(this);
         // -- end of animation --
-
         connect.setOnClickListener(v -> {
             /// add transition to the next page
             if (db.getCarCount() > 0) {
-                Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
-                startActivity(intent);
-                finish();
+                if (sharedPreferencesManager.getSignedIn()) {
+                    Intent intent = new Intent(ConnectActivity.this, CustomerNavigator.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(ConnectActivity.this, SignInActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             } else {
                 new NetworkTask().execute();
             }

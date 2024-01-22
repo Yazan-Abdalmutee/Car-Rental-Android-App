@@ -8,7 +8,9 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Base64;
@@ -75,6 +77,7 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
         super.onCreate(savedInstanceState);
         Arrays.fill(pages, false);
         setContentView(R.layout.activity_home_layout);
+
         if (!sharedPreferencesManager.getSignedIn()) {
             try {
                 Cursor cursor = MyApplication.getDatabaseManager().customerInfo(sharedPreferencesManager.getEmail());
@@ -283,6 +286,8 @@ public class CustomerNavigator extends AppCompatActivity implements NavigationVi
     public void showFilterDialog() {
         filterDialog = new Dialog(this);
         filterDialog.setContentView(R.layout.cars_filter);
+        filterDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         Button saveButton = filterDialog.findViewById(R.id.filter_save_button);
         Button cancelButton = filterDialog.findViewById(R.id.filter_cancel_button);
 

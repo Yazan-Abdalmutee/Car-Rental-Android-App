@@ -73,10 +73,10 @@ public class CarItemFragment extends Fragment {
         final LinearLayout expandedData = view.findViewById(R.id.expanded_layot);
 
         ImageView favorite = view.findViewById(R.id.filter_button);
-
+        favorite.setColorFilter(getResources().getColor(R.color.red));
         CardView cardView = view.findViewById(R.id.car_card_item);
 
-        cardView.setBackgroundResource(R.drawable.card_border);
+//        cardView.setBackgroundResource(R.drawable.card_border);
 
         Bundle args = getArguments();
 
@@ -128,9 +128,9 @@ public class CarItemFragment extends Fragment {
 
 
         if (isCarInFavorites) {
-            favorite.setImageResource(R.drawable.heart_red);
+            favorite.setImageResource(R.drawable.baseline_favorite_24);
         } else {
-            favorite.setImageResource(R.drawable.heart);
+            favorite.setImageResource(R.drawable.outline_favorite_border_24);
         }
         if (db.isCarInReservation(carId)) {
             showLayoutDate.setVisibility(View.VISIBLE);
@@ -155,15 +155,15 @@ public class CarItemFragment extends Fragment {
         favorite.setOnClickListener(view12 -> {
             if (!isCarInFavorites) {
 
-                favorite.setImageResource(R.drawable.heart_red);
+                favorite.setImageResource(R.drawable.baseline_favorite_24);
+                favorite.setColorFilter(getResources().getColor(R.color.red));
                 isCarInFavorites = true;
                 db.insertFavorite(carId, email);
 
             } else {
                 isCarInFavorites = false;
-                favorite.setImageResource(R.drawable.heart);
+                favorite.setImageResource(R.drawable.outline_favorite_border_24);
                 db.removeFavorite(carId, email);
-
 
             }
             //db.close();
@@ -231,7 +231,7 @@ public class CarItemFragment extends Fragment {
 
         expandButton.setOnClickListener(v -> {
             expandedData.setVisibility(expandedData.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-            expandButton.setImageResource(expandedData.getVisibility() == View.VISIBLE ? R.drawable.arrow_up : R.drawable.expand_button);
+            expandButton.setImageResource(expandedData.getVisibility() == View.VISIBLE ? R.drawable.baseline_keyboard_arrow_down_24 : R.drawable.baseline_keyboard_arrow_up_24);
         });
         return view;
     }

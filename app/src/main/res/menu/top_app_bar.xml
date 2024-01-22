@@ -13,7 +13,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/filter_button"
-        android:icon="@drawable/edit"
+        android:icon="@drawable/baseline_filter_list_24"
         android:title="@string/search"
         android:visible="false"
         app:showAsAction="always" />
