@@ -168,8 +168,8 @@ public class CarItemFragment extends Fragment {
             }
             //db.close();
         });
-        if(sharedPreferencesManager.getIsAdmin()==1)
-            reserveButton.setVisibility(view.GONE);
+//        if(sharedPreferencesManager.getIsAdmin()==1)
+//            reserveButton.setVisibility(view.GONE);
 
 
 

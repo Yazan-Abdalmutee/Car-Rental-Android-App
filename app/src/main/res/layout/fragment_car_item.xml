@@ -8,8 +8,7 @@
     android:layout_gravity="center_horizontal"
     android:layout_margin="18dp"
     android:orientation="vertical"
-    app:cardCornerRadius="25dp"
-    app:cardElevation="30dp">
+    app:cardCornerRadius="25dp">
 
     <LinearLayout
         android:layout_width="match_parent"
