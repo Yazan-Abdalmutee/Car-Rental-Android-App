@@ -180,6 +180,8 @@ public class ProfileFragment extends Fragment {
             passwordLayout.setErrorIconDrawable(null);
             confirmPasswordLayout.setErrorIconDrawable(null);
             String passwordHashed = PasswordHasher.hashPassword(password.getText().toString());
+            DatabaseManager databaseManager = MyApplication.getDatabaseManager();
+
             databaseManager.editCustomer(sharedPreferencesManager.getEmail(), firstName.getText().toString(), lastName.getText().toString(), phone.getText().toString(), password.getText().toString());
             sharedPreferencesManager.setFirstName(firstName.getText().toString());
             sharedPreferencesManager.setLastName(lastName.getText().toString());
