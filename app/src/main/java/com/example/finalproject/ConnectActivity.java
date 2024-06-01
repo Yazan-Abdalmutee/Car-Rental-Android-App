@@ -86,7 +86,7 @@ public class ConnectActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                String link = "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?select=make%2Cmodel%2Cdrive%2Cfueltype%2Cyear%2Cvclass&limit=100";
+                String link = "jhkjhkjhecords?select=make%2Cmodel%2Cdrive%2Cfueltype%2Cyear%2Cvclass&limit=100";
                 URL url = new URL(link); // Replace with your API endpoint
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");

@@ -171,7 +171,8 @@ public class ProfileFragment extends Fragment {
                 confirmPassword.setText(sharedPreferencesManager.getPasswordHashed());
 
 
-            DatabaseManager databaseManager = MyApplication.getDatabaseManager();
+
+
 
 
 
